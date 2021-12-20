@@ -1,0 +1,109 @@
+<template>
+  <div class="topList">
+    <div class="offical">
+      <h3>官方榜</h3>
+      <div class="officalList">
+        <div class="officalListBox" v-for="(item,index) in officalList" :key="index">
+          <div class="image"  @click="goToDetial(item.id)" >
+            <el-image :src="item.coverImgUrl"></el-image>
+          </div>
+          <div class="songs"></div>
+        </div>
+      </div>
+    </div>
+    <div class="global">
+      <h3>全球榜</h3>
+      <div class="globalList">
+        <div class="globalListBox" @click="goToDetial(item.id)" v-for="(item, index) in globalList" :key="index">
+          <div class="image">
+            <el-image :src="item.coverImgUrl" ></el-image>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      officalList: [],
+      globalList: []
+    }
+  },
+  created () {
+    this.getList()
+  },
+  methods: {
+    async getList () {
+      const { data: res } = await this.$http.get('/toplist')
+      if (res.code !== 200) return this.$message.error('获取信息失败')
+      for (let i = 0; i < 4; i++) {
+        this.officalList.push(res.list[i])
+      }
+      for (let i = 4; i < res.list.length; i++) {
+        this.globalList.push(res.list[i])
+      }
+      console.log(this.officalList)
+      console.log(this.globalList)
+    },
+    // 跳转到歌单详情页面
+    goToDetial (id) {
+      // console.log(id)
+      this.$router.push(`/playList/${id}`)
+    }
+  }
+}
+</script>
+
+<style lang="scss" scope>
+.topList {
+  h3 {
+    margin: 0;
+    padding: 0;
+  }
+  .offical {
+    .officalList {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .officalListBox {
+        width: 45%;
+        display: flex;
+        margin-bottom: 10px;
+        .image {
+          width: 200px;
+          height: 200px;
+          border-radius: 5px;
+          overflow: hidden;
+          cursor: pointer;
+        }
+        .songs {
+        }
+      }
+    }
+  }
+   .global {
+      .globalList {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin-top: 10px;
+        .globalListBox {
+          width: 18%;
+          margin-right: 10px;
+          margin-top: 5px;
+          cursor: pointer;
+          .image {
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            overflow: hidden;
+          }
+        }
+      }
+    }
+}
+</style>
