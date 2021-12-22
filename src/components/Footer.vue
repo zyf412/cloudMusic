@@ -126,11 +126,14 @@ export default {
   methods: {
     // 得到音乐url
     async getMusicUrl (id) {
+      // console.log(data)
+      // if (!check.success) return this.$message.error(check.message)
       const { data: res } = await this.$http.get('/song/url', {
         params: { id }
       })
       if (res.code !== 200) return this.$message.error('播放失败')
       this.musicUrl = res.data[0].url
+      // console.log(this.musicUrl)
       // this.musicIdArr.push(this.musicUrl)
     },
     // 绑定播放暂停按钮

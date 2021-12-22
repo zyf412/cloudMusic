@@ -32,7 +32,7 @@
     <div class="songList">
       <el-tabs v-model="activeName">
         <el-tab-pane label="歌曲列表" name="first">
-          <el-table :data="songlist" style="width: 100%" @row-dblclick=rowDbClick>
+          <el-table :data="songlist" style="width: 100%" @row-dblclick="rowDbClick">
             <el-table-column type="index">
             </el-table-column>
             <el-table-column prop="name" label="音乐标题" width="250">
@@ -65,10 +65,12 @@
 
 <script>
 import Comment from '@/components/Comment/Comment.vue'
+import { mixin } from '@/mixin/mixin.js'
 import { mapMutations } from 'vuex'
 export default {
   name: 'playList',
   props: ['id'],
+  mixins: [mixin],
   components: {
     Comment,
     Subscribe: () => import('@/components/PlayList/subscribe.vue')
@@ -118,7 +120,8 @@ export default {
       sec = sec < 10 ? '0' + sec : sec
       return `${min}:${sec}`
     },
-    rowDbClick (row) {
+    async rowDbClick (row) {
+      if (!await this.checkMusic(row.id)) return
       this.musicIdIndex = this.musicIdlist.indexOf(row.id)
       this.getMusicIdList({
         musicIdlist: this.musicIdlist,

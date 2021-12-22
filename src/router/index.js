@@ -4,6 +4,7 @@ import Home from '@/views/Home.vue'
 import FindMusic from '@/components/FindMusic/FindMusic.vue'
 import PlayList from '@/components/PlayList/playList.vue'
 import Search from '@/components/Search/Search.vue'
+import ArtistDetail from '@/components/Artist/ArtistDetail.vue'
 // import AllPlayList from '@/components/PlayList/allPlayList.vue'
 import { eventBus } from '@/eventBus/eventBus.js'
 
@@ -32,7 +33,12 @@ const routes = [
           next()
         }
       },
-      { path: '/search/:keyword', component: Search, props: true }
+      { path: '/search/:keyword', component: Search, props: true },
+      {
+        path: '/artistDetail/:id',
+        component: ArtistDetail,
+        props: true
+      }
     ]
   }
 ]

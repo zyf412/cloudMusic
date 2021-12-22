@@ -4,27 +4,27 @@
       <div class="area">
         <div>语种:</div>
         <ul>
-          <li v-for="(item, index) in area" :key="index" @click="changeArea(item[0])">{{item[1]}}</li>
+          <li v-for="(item, index) in area" :style="areaIndex===index?selectedStyle:''" :key="index" @click="changeArea(item[0],index)">{{item[1]}}</li>
         </ul>
       </div>
       <div class="type">
         <div>分类:</div>
         <ul>
-          <li v-for="(item, index) in type" :key="index" @click="changeType(item[0])">{{item[1]}}</li>
+          <li :style="typeIndex===index?selectedStyle:''" v-for="(item, index) in type" :key="index" @click="changeType(item[0],index)">{{item[1]}}</li>
         </ul>
       </div>
       <div class="word">
         <div>筛选:</div>
         <ul>
-          <li class="s" @click="changeInitial(-1)">热门</li>
-          <li v-for="(item, index) in word" :key="index" @click="changeInitial(item)">{{item}}</li>
-          <li  @click="changeInitial(0)">#</li>
+          <li  :style="wordIndex===-1?selectedStyle:''" class="s" @click="changeInitial(-1,-1)">热门</li>
+          <li  :style="wordIndex===item?selectedStyle:''" v-for="(item, index) in word" :key="index" @click="changeInitial(item,item)">{{item}}</li>
+          <li  :style="wordIndex===0?selectedStyle:''" @click="changeInitial(0,0)">#</li>
         </ul>
       </div>
     </div>
     <div class="list" v-infinite-scroll="load" infinite-scroll-disabled="disabled" infinite-scroll-immediate=flase>
-      <div class="image" v-for="(item, index) in artists" :key="index">
-        <el-image  style="width: 180px; height: 150px" :src="item.picUrl"  lazy></el-image>
+      <div class="image" v-for="(item, index) in artists" :key="index" @click="gotoDetail(item.id)">
+        <el-image  style="width: 100%; min-height: 180px" :src="item.img1v1Url"  lazy></el-image>
         <div class="name">{{item.name}}</div>
       </div>
     </div>
@@ -61,7 +61,13 @@ export default {
       page: 0,
       areaID: -1,
       typeID: -1,
-      initial: -1 // 筛选  热门为-1， #号为0 其他传递字母
+      initial: -1, // 筛选  热门为-1， #号为0 其他传递字母
+      areaIndex: 0,
+      typeIndex: 0,
+      wordIndex: -1,
+      selectedStyle: {
+        backgroundColor: '#fdeded'
+      }
     }
   },
   computed: {
@@ -100,28 +106,35 @@ export default {
       }, 2000)
     },
     // 改变语种
-    changeArea (areaID) {
+    changeArea (areaID, index) {
       this.page = 0
       this.offset = 0
       this.areaID = areaID
       this.artists = []
+      this.areaIndex = index
       this.getArtists()
     },
     // 改变分类
-    changeType (typeID) {
+    changeType (typeID, index) {
       this.page = 0
       this.offset = 0
       this.typeID = typeID
       this.artists = []
+      this.typeIndex = index
       this.getArtists()
     },
     // 改变筛选
-    changeInitial (initial) {
+    changeInitial (initial, index) {
       this.page = 0
       this.offset = 0
       this.initial = initial
       this.artists = []
+      this.wordIndex = index
       this.getArtists()
+    },
+    // 跳转到歌手详情页面
+    gotoDetail (id) {
+      this.$router.push(`/artistDetail/${id}`)
     }
   }
 }
@@ -150,9 +163,12 @@ ul {
       }
       ul li {
         float: left;
-        width: 100px;
+        width: 80px;
         text-align: center;
         line-height: 25px;
+        height: 25px;
+        border-radius: 25px;
+        margin: 0 15px;
         cursor: pointer;
         &:hover {
           color: #d1515f;
@@ -167,6 +183,7 @@ ul {
       width: 17%;
       margin-right: 15px;
       margin-bottom: 15px;
+      cursor: pointer;
       .name {
         margin-top: 8px;
         height: 40px;
