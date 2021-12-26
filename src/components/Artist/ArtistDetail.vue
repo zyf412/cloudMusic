@@ -46,10 +46,12 @@
 </template>
 
 <script>
+import { eventBus } from '@/eventBus/eventBus.js'
 import { mapMutations } from 'vuex'
 import { mixin } from '@/mixin/mixin.js'
 import AlbumBox from '@/components/Artist/AlbumBox.vue'
 export default {
+  name: 'ArtistDetail',
   props: ['id'],
   components: {
     AlbumBox
@@ -68,20 +70,38 @@ export default {
       albumIds: [],
       limit: 5,
       offset: 0, // 偏移量
-      page: 0
+      page: 0,
+      isActived: false
     }
   },
   created () {
+    console.log('创建了 ')
     this.getArtistInfo()
     this.getAlbumIds()
   },
   computed: {
     disabled () {
-      return this.loading || !this.isMore
+      return this.isActived || (this.loading || !this.isMore)
     }
   },
+  activated () {
+    console.log('恢复了')
+    eventBus.$emit('backToArtistDetail')
+    this.isActived = false
+  },
+  deactivated () {
+    console.log('缓存了')
+    this.isActived = true
+  },
+  beforeRouteLeave (to, from, next) {
+    console.log(to)
+    if (to.path === '/FindMusic') {
+      this.clearCatch('ArtistDetail')
+    }
+    next()
+  },
   methods: {
-    ...mapMutations(['getMusicIdList']),
+    ...mapMutations(['getMusicIdList', 'clearCatch']),
     // 得到歌手信息
     async getArtistInfo () {
       const { data: res } = await this.$http.get('/artists', {
@@ -90,8 +110,7 @@ export default {
       if (res.code !== 200) return this.$message.error('获取信息失败')
       this.artist = res.artist
       this.hotSongs = res.hotSongs
-      this.musicIdList = res.hotSongs.map(item => Number(item.id))
-      console.log(this.musicIdList)
+      this.musicIdList = res.hotSongs.filter(item => item.st !== -1).map(item => Number(item.id))
       this.getMusicListDetail(this.musicIdList.join(','))
     },
     // 过滤播放时间
@@ -109,7 +128,6 @@ export default {
       })
       if (res.code !== 200) return this.$message.error('获取信息失败')
       this.songlist = res.songs
-      // console.log(this.songlist)
     },
     async rowDbClick (row) {
       // console.log(this.checkMusic(row.id))

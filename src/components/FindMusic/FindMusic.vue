@@ -20,7 +20,11 @@
           <HighQuality v-else></HighQuality>
       </el-tab-pane>
       <el-tab-pane :lazy="true" label="排行榜" name="fourth"><TopList></TopList></el-tab-pane>
-      <el-tab-pane  :lazy="true" label="歌手" name="fifth"><Artist></Artist></el-tab-pane>
+      <el-tab-pane  :lazy="true" label="歌手" name="fifth">
+        <keep-alive>
+        <Artist></Artist>
+        </keep-alive>
+      </el-tab-pane>
       <el-tab-pane label="最新音乐" name="sixth">最新音乐</el-tab-pane>
     </el-tabs>
   </div>

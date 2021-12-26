@@ -1,7 +1,7 @@
 <template>
   <div class="albumBox">
     <div class="imagebox">
-      <div class="image">
+      <div class="image" @click="gotoDetail">
         <el-image style="width: 150px; height: 150px" lazy :src="ablum.blurPicUrl"></el-image>
       </div>
       <div class="publishTime">{{publishTime}}</div>
@@ -26,12 +26,18 @@
 </template>
 
 <script>
+import { mixin } from '@/mixin/mixin.js'
+import { mapMutations } from 'vuex'
 export default {
   props: ['id'],
+  mixins: [mixin],
   data () {
     return {
       ablum: {},
-      songs: []
+      songs: [],
+      musicIdList: [],
+      musicIdIndex: 0,
+      songlist: []
     }
   },
   created () {
@@ -47,12 +53,26 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['getMusicIdList']),
     //   得到专辑信息
     async getAlbumInfo () {
       const { data: res } = await this.$http.get('/album', { params: { id: this.id } })
       if (res.code !== 200) return this.$message.error('获取信息失败')
       this.ablum = res.album
       this.songs = res.songs
+      this.musicIdList = res.songs.filter(item => item.st !== -1).map(item => Number(item.id))
+      // console.log(res.songs)
+      this.getMusicListDetail(this.musicIdList.join(','))
+    },
+    // 得到音乐信息
+    async getMusicListDetail (ids) {
+      const { data: res } = await this.$http.get('/song/detail', {
+        params: { ids: ids }
+      })
+      if (res.code !== 200) return this.$message.error('获取信息失败')
+      this.songlist = res.songs
+      // console.log(444444)
+      // console.log(this.songlist)
     },
     // 过滤时间
     fliterTime (time) {
@@ -62,8 +82,19 @@ export default {
       sec = sec < 10 ? '0' + sec : sec
       return `${min}:${sec}`
     },
-    rowDbClick () {
-      console.log(23)
+    async rowDbClick (row) {
+      // console.log(this.checkMusic(row.id))
+      if (!await this.checkMusic(row.id)) return
+      this.musicIdIndex = this.musicIdList.indexOf(row.id)
+      this.getMusicIdList({
+        musicIdlist: this.musicIdList,
+        musicIdIndex: this.musicIdIndex,
+        songlist: this.songlist
+      })
+    },
+    // 查看专辑详情
+    gotoDetail () {
+      this.$router.push(`/albumDetail/${this.id}`)
     }
   }
 }
@@ -76,6 +107,7 @@ export default {
         .imagebox{
             margin-right: 100px;
             .image{
+               cursor: pointer;
                 border-radius: 5px;
                 overflow: hidden;
                 width: 150px;

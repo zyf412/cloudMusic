@@ -5,7 +5,7 @@ import FindMusic from '@/components/FindMusic/FindMusic.vue'
 import PlayList from '@/components/PlayList/playList.vue'
 import Search from '@/components/Search/Search.vue'
 import ArtistDetail from '@/components/Artist/ArtistDetail.vue'
-// import AllPlayList from '@/components/PlayList/allPlayList.vue'
+import AlbumDetail from '@/components/Artist/AlbumDetail.vue'
 import { eventBus } from '@/eventBus/eventBus.js'
 
 Vue.use(VueRouter)
@@ -37,8 +37,26 @@ const routes = [
       {
         path: '/artistDetail/:id',
         component: ArtistDetail,
-        props: true
+        props: true,
+        beforeEnter: (to, from, next) => {
+          console.log(from)
+          if (from.path === '/FindMusic') {
+            eventBus.$emit('backAllPlayList')
+            console.log('再次进入')
+          }
+          next()
+        }
+      },
+      {
+        path: '/albumDetail/:id',
+        component: AlbumDetail,
+        props: true,
+        beforeEnter: (to, from, next) => {
+          eventBus.$emit('backArtistDetail')
+          next()
+        }
       }
+
     ]
   }
 ]

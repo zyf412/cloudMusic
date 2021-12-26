@@ -22,7 +22,7 @@
         </ul>
       </div>
     </div>
-    <div class="list" v-infinite-scroll="load" infinite-scroll-disabled="disabled" infinite-scroll-immediate=flase>
+    <div class="list" ref="listRef"  v-infinite-scroll="load" infinite-scroll-disabled="disabled" infinite-scroll-immediate=flase>
       <div class="image" v-for="(item, index) in artists" :key="index" @click="gotoDetail(item.id)">
         <el-image  style="width: 100%; min-height: 180px" :src="item.img1v1Url"  lazy></el-image>
         <div class="name">{{item.name}}</div>
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { eventBus } from '@/eventBus/eventBus.js'
 export default {
   data () {
     return {
@@ -55,9 +56,10 @@ export default {
       limit: 30, // 每页数量
       offset: 0, // 偏移量
       isMore: false, // 是否还有更多
+      loading: false,
+      isActived: false,
       word: [], // 首字母
       artists: [],
-      loading: false,
       page: 0,
       areaID: -1,
       typeID: -1,
@@ -68,11 +70,12 @@ export default {
       selectedStyle: {
         backgroundColor: '#fdeded'
       }
+
     }
   },
   computed: {
     disabled () {
-      return this.loading || !this.isMore
+      return this.isActived || (this.loading || !this.isMore)
     }
   },
   created () {
@@ -80,6 +83,15 @@ export default {
       this.word.push(String.fromCharCode(i))
     }
     this.getArtists()
+  },
+  activated () {
+    // console.log('激活了')
+    eventBus.$emit('backTo')
+    this.isActived = false
+  },
+  deactivated () {
+    console.log('缓存了')
+    this.isActived = true
   },
   methods: {
     async getArtists () {

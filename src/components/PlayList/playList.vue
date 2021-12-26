@@ -86,6 +86,7 @@ export default {
   },
   created () {
     this.getListDetail(this.id)
+    console.log(this.id)
   },
   methods: {
     ...mapMutations(['getMusicIdList']),

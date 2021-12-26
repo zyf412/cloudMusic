@@ -149,11 +149,10 @@
             </el-submenu>
           </el-menu>
         </el-aside>
-
         <!-- 主要内容 -->
         <el-container>
           <el-main class="bodyMain" ref="main">
-            <keep-alive include="FindMusic">
+            <keep-alive :include="mainKeepAliveArr">
              <router-view ></router-view>
             </keep-alive>
           </el-main>
@@ -188,7 +187,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['playListCateScrollTop'])
+    ...mapState(['playListCateScrollTop', 'artistDetailScrollTop', 'mainKeepAliveArr'])
   },
   created () {
     // 通过事件总线，监听换页，移动滚动条
@@ -209,6 +208,17 @@ export default {
     eventBus.$on('backTo', () => {
       this.$refs.main.$el.scrollTop = this.playListCateScrollTop
     })
+    // 得到之前滚动条的位置，添加到vuex中去
+    eventBus.$on('backArtistDetail', () => {
+      this.getArtistDetailScrollTop(this.$refs.main.$el.scrollTop)
+    })
+    // 当返回之前的页面，还原之前滚动条的位置
+    eventBus.$on('backToArtistDetail', () => {
+      // this.$refs.main.$el.scrollTop = this.artistDetailScrollTop
+      setTimeout(() => {
+        this.$refs.main.$el.scrollTop = this.artistDetailScrollTop
+      }, 0) // 延迟1ms后在赋值，不然可能会错位，目前尚未知道原因
+    })
   },
   watch: {
     keyword: {
@@ -228,7 +238,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['getScrollTop']),
+    ...mapMutations(['getScrollTop', 'getArtistDetailScrollTop']),
     back () {
       this.$router.back()
     },

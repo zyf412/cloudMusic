@@ -83,7 +83,7 @@ export default {
     this.getPlayList()
   },
   activated () {
-    console.log('激活了')
+    // console.log('激活了')
     eventBus.$emit('backTo')
   },
   methods: {
