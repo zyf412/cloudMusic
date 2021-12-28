@@ -71,8 +71,6 @@ export default {
       })
       if (res.code !== 200) return this.$message.error('获取信息失败')
       this.songlist = res.songs
-      // console.log(444444)
-      // console.log(this.songlist)
     },
     // 过滤时间
     fliterTime (time) {
