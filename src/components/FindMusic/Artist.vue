@@ -16,15 +16,15 @@
       <div class="word">
         <div>筛选:</div>
         <ul>
-          <li  :style="wordIndex===-1?selectedStyle:''" class="s" @click="changeInitial(-1,-1)">热门</li>
-          <li  :style="wordIndex===item?selectedStyle:''" v-for="(item, index) in word" :key="index" @click="changeInitial(item,item)">{{item}}</li>
-          <li  :style="wordIndex===0?selectedStyle:''" @click="changeInitial(0,0)">#</li>
+          <li :style="wordIndex===-1?selectedStyle:''" class="s" @click="changeInitial(-1,-1)">热门</li>
+          <li :style="wordIndex===item?selectedStyle:''" v-for="(item, index) in word" :key="index" @click="changeInitial(item,item)">{{item}}</li>
+          <li :style="wordIndex===0?selectedStyle:''" @click="changeInitial(0,0)">#</li>
         </ul>
       </div>
     </div>
-    <div class="list" ref="listRef"  v-infinite-scroll="load" infinite-scroll-disabled="disabled" infinite-scroll-immediate=flase>
+    <div class="list" ref="listRef" v-infinite-scroll="load" infinite-scroll-disabled="disabled" infinite-scroll-immediate=flase>
       <div class="image" v-for="(item, index) in artists" :key="index" @click="gotoDetail(item.id)">
-        <el-image  style="width: 100%; min-height: 180px" :src="item.img1v1Url"  lazy></el-image>
+        <MyImage :src="item.img1v1Url"></MyImage>
         <div class="name">{{item.name}}</div>
       </div>
     </div>
@@ -35,8 +35,12 @@
 </template>
 
 <script>
+import MyImage from '@/components/MyComponents/MyImage.vue'
 import { eventBus } from '@/eventBus/eventBus.js'
 export default {
+  components: {
+    MyImage
+  },
   data () {
     return {
       type: [
@@ -70,12 +74,11 @@ export default {
       selectedStyle: {
         backgroundColor: '#fdeded'
       }
-
     }
   },
   computed: {
     disabled () {
-      return this.isActived || (this.loading || !this.isMore)
+      return this.isActived || this.loading || !this.isMore
     }
   },
   created () {
@@ -203,7 +206,7 @@ ul {
     }
   }
   p {
-      text-align: center;
+    text-align: center;
   }
 }
 </style>

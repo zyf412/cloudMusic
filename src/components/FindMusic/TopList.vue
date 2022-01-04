@@ -1,11 +1,12 @@
 <template>
-  <div class="topList">
+ <transition name="el-zoom-in-center">
+  <div class="transition-box topList">
     <div class="offical">
       <h3>官方榜</h3>
       <div class="officalList">
         <div class="officalListBox" v-for="(item,index) in officalList" :key="index">
           <div class="image"  @click="goToDetial(item.id)" >
-            <el-image :src="item.coverImgUrl"></el-image>
+            <MyImage :src="item.coverImgUrl"></MyImage>
           </div>
           <div class="songs"></div>
         </div>
@@ -16,24 +17,37 @@
       <div class="globalList">
         <div class="globalListBox" @click="goToDetial(item.id)" v-for="(item, index) in globalList" :key="index">
           <div class="image">
-            <el-image :src="item.coverImgUrl" ></el-image>
+             <MyImage :src="item.coverImgUrl"></MyImage>
           </div>
         </div>
       </div>
     </div>
   </div>
+</transition>
 </template>
 
 <script>
+import MyImage from '@/components/MyComponents/MyImage.vue'
 export default {
+  components: {
+    MyImage
+  },
   data () {
     return {
       officalList: [],
-      globalList: []
+      globalList: [],
+      show: false
     }
   },
   created () {
     this.getList()
+  },
+  activated () {
+    this.show = true
+    console.log(12121)
+  },
+  deactivated () {
+    this.show = false
   },
   methods: {
     async getList () {

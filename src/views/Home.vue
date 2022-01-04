@@ -210,14 +210,16 @@ export default {
     })
     // 得到之前滚动条的位置，添加到vuex中去
     eventBus.$on('backArtistDetail', () => {
+      console.log(this.$refs.main.$el.scrollTop)
       this.getArtistDetailScrollTop(this.$refs.main.$el.scrollTop)
     })
     // 当返回之前的页面，还原之前滚动条的位置
     eventBus.$on('backToArtistDetail', () => {
       // this.$refs.main.$el.scrollTop = this.artistDetailScrollTop
-      setTimeout(() => {
-        this.$refs.main.$el.scrollTop = this.artistDetailScrollTop
-      }, 0) // 延迟1ms后在赋值，不然可能会错位，目前尚未知道原因
+      // setTimeout(() => {
+      console.log(this.artistDetailScrollTop)
+      this.$refs.main.$el.scrollTop = this.artistDetailScrollTop
+      // }, 1) // 延迟1ms后在赋值，不然可能会错位，目前尚未知道原因
     })
   },
   watch: {

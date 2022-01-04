@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tabs v-model="activeName">
+    <el-tabs v-model="activeName" :before-leave="leave">
       <el-tab-pane label="个性推荐" name="first">
         <div class="recommend">
           <!-- 轮播图 -->
@@ -19,7 +19,11 @@
           <!-- <router-view v-else></router-view> -->
           <HighQuality v-else></HighQuality>
       </el-tab-pane>
-      <el-tab-pane :lazy="true" label="排行榜" name="fourth"><TopList></TopList></el-tab-pane>
+      <el-tab-pane :lazy="true" label="排行榜" name="fourth">
+        <keep-alive>
+        <TopList></TopList>
+        </keep-alive>
+      </el-tab-pane>
       <el-tab-pane  :lazy="true" label="歌手" name="fifth">
         <keep-alive>
         <Artist></Artist>
@@ -37,7 +41,7 @@ import Recommend from '@/components/FindMusic/Recommend.vue'
 import HighQuality from '@/components/PlayList/HighQualityPlaylist.vue'
 import TopList from '@/components/FindMusic/TopList.vue'
 import Artist from '@/components/FindMusic/Artist.vue'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'FindMusic',
   components: {
@@ -58,7 +62,13 @@ export default {
     ...mapState(['ifShowHighQuality'])
   },
   methods: {
-
+    ...mapMutations(['changeHighQuality']),
+    leave () {
+      if (this.ifShowHighQuality) {
+        this.changeHighQuality()
+      }
+      return true
+    }
     // goToThird () {
     //   this.activeName = 'third'
     // },

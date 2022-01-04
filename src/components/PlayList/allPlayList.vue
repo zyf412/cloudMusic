@@ -12,7 +12,7 @@
         <div>
           <el-tag class="all" @click="changeCate('全部')">全部歌单</el-tag>
         </div>
-         <el-divider></el-divider>
+        <el-divider></el-divider>
         <el-table :data="categories" style="width: 100%" :show-header="false">
           <el-table-column width="180">
             <template scope="scope">
@@ -21,13 +21,13 @@
               </div>
             </template>
           </el-table-column>
-           <el-table-column width="300">
+          <el-table-column width="300">
             <template scope="scope">
               <div class="cate">
-                 <div  v-for="(item,index) in catList" :key="index">
-                   <el-tag @click="changeCate(item.name)" class="cateItem" v-if="item.category===scope.row.id">{{item.name}}
-                   </el-tag>
-                 </div>
+                <div v-for="(item,index) in catList" :key="index">
+                  <el-tag @click="changeCate(item.name)" class="cateItem" v-if="item.category===scope.row.id">{{item.name}}
+                  </el-tag>
+                </div>
               </div>
             </template>
           </el-table-column>
@@ -39,7 +39,7 @@
       <div class="box">
         <el-card :body-style="{ padding: '3px' }" v-for="(item, index) in playlists" :key="index" @click.native="goToDetial(item.id)">
           <!-- <img :src="item.coverImgUrl" alt="" class="image" /> -->
-           <el-image style="width: 100%; height: 100%; min-height: 109px" lazy :src="item.coverImgUrl" ></el-image>
+          <MyImage :src="item.coverImgUrl"></MyImage>
           <div class="textBox">
             <span>{{ item.name }}</span>
           </div>
@@ -54,9 +54,13 @@
 </template>
 
 <script>
+import MyImage from '@/components/MyComponents/MyImage.vue'
 import { eventBus } from '@/eventBus/eventBus.js'
 import { mapState, mapMutations } from 'vuex'
 export default {
+  components: {
+    MyImage
+  },
   data () {
     return {
       catList: [], // 歌单分类
@@ -151,11 +155,12 @@ export default {
       this.offset = 0
       this.changePlayListCate(cate)
       this.getPlayList()
-      this.showChooseBox = this.showChooseBox ? !this.showChooseBox : this.showChooseBox
+      this.showChooseBox = this.showChooseBox
+        ? !this.showChooseBox
+        : this.showChooseBox
     },
     // 跳转到热门歌单封面
     gotoHighQuality () {
-      // this.$router.push('/highQuality')
       this.changeHighQuality()
     }
   }
@@ -192,7 +197,7 @@ export default {
         flex-wrap: wrap;
         justify-content: flex-start;
         .cateItem {
-          margin:3px 3px;
+          margin: 3px 3px;
           cursor: pointer;
         }
       }

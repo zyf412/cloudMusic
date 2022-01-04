@@ -5,7 +5,7 @@
       <h2>推荐歌单 ></h2>
       <div class="box">
         <el-card :body-style="{ padding: '3px' }" v-for="(item, index) in personalized" :key="index" @click.native="goToDetial(item.id)">
-          <img :src="item.picUrl" alt="" class="image" />
+          <MyImage :src="item.picUrl"></MyImage>
           <div class="textBox">
             <span>{{ item.name }}</span>
           </div>
@@ -18,7 +18,7 @@
       <div class="newSongContainer">
         <div class="Song" v-for="(item, index) in newSong" :key="index">
           <div class="avatar" @click="playNewSong(item.id)">
-            <el-avatar :size="70" :src="item.picUrl"></el-avatar>
+            <div class="image"><MyImage :src="item.picUrl"></MyImage></div>
           </div>
           <div class="info" @dblclick="playNewSong(item.id)">
             <div class="name">
@@ -36,9 +36,13 @@
 </template>
 
 <script>
+import MyImage from '@/components/MyComponents/MyImage.vue'
 import { eventBus } from '@/eventBus/eventBus.js'
 import { mapMutations, mapState } from 'vuex'
 export default {
+  components: {
+    MyImage
+  },
   data () {
     return {
       personalized: [],
@@ -111,10 +115,6 @@ export default {
       .el-card {
         width: 18%;
         cursor: pointer;
-        .image {
-          width: 100%;
-          display: block;
-        }
         .textBox {
           height: 40px;
           // overflow: hidden;

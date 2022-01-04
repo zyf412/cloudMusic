@@ -1,5 +1,6 @@
 <template>
-  <div class="artistDetail">
+<transition duration=500  name="el-zoom-in-center">
+  <div class="artistDetail transition-box">
     <div class="head">
         <div class="img">
             <el-image :src="artist.img1v1Url"  style="width: 200px; height: 200px"></el-image>
@@ -43,6 +44,7 @@
         <el-tab-pane label="相似歌手" name="fourth">定时任务补偿</el-tab-pane>
       </el-tabs>
   </div>
+</transition>
 </template>
 
 <script>

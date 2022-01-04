@@ -53,6 +53,7 @@ const routes = [
         props: true,
         beforeEnter: (to, from, next) => {
           eventBus.$emit('backArtistDetail')
+          eventBus.$emit('changeSearchPage')
           next()
         }
       }

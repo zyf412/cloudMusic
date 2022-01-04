@@ -18,7 +18,7 @@
       <!-- 歌单盒子 -->
       <div class="playListBox" v-for="(item,index) in highPlaylist" :key="index" @click="goToDetial(item.id)">
         <div class="image">
-          <el-image style="width: 150px; height: 150px" lazy :src="item.coverImgUrl" ></el-image>
+          <MyImage :src="item.coverImgUrl" ></MyImage>
         </div>
         <div class="describe">
           <div class="name" :title="item.name">{{item.name}}</div>
@@ -36,8 +36,12 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import MyImage from '@/components/MyComponents/MyImage.vue'
+import { mapState, mapMutations } from 'vuex'
 export default {
+  components: {
+    MyImage
+  },
   data () {
     return {
       highQualityCate: [], // 精品歌单的分类
@@ -55,8 +59,9 @@ export default {
     this.getHighPlaylist()
   },
   computed: {
+    ...mapState(['ifShowHighQuality']),
     disabled () {
-      return this.loading || !this.more
+      return !this.ifShowHighQuality || (this.loading || !this.more)
     }
   },
   methods: {
