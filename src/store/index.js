@@ -12,6 +12,7 @@ export default new Vuex.Store({
     playListCateScrollTop: 0, // 歌单分类滚动条的位置
     ifShowHighQuality: false, // 是否显示精品歌单，默认是false
     artistDetailScrollTop: 0, // 歌手详情滚动条的位置
+    ifArtistActived: false, // 歌手分类是否显示
     mainKeepAliveArr: ['FindMusic', 'ArtistDetail']
   },
   mutations: {
@@ -60,6 +61,14 @@ export default new Vuex.Store({
       setTimeout(() => {
         state.mainKeepAliveArr.push(name)
       }, 200)
+    },
+    // ifArtistActived 歌手分类显示
+    showArtist (state) {
+      state.ifArtistActived = false
+    },
+    // ifArtistActived 歌手分类关闭
+    closeArtist (state) {
+      state.ifArtistActived = true
     }
   },
   actions: {

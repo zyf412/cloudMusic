@@ -37,6 +37,7 @@
 <script>
 import MyImage from '@/components/MyComponents/MyImage.vue'
 import { eventBus } from '@/eventBus/eventBus.js'
+import { mapState, mapMutations } from 'vuex'
 export default {
   components: {
     MyImage
@@ -61,7 +62,7 @@ export default {
       offset: 0, // 偏移量
       isMore: false, // 是否还有更多
       loading: false,
-      isActived: false,
+      // isActived: false,
       word: [], // 首字母
       artists: [],
       page: 0,
@@ -77,26 +78,31 @@ export default {
     }
   },
   computed: {
+    ...mapState(['ifArtistActived']),
     disabled () {
-      return this.isActived || this.loading || !this.isMore
+      return this.ifArtistActived || (this.loading || !this.isMore)
     }
   },
   created () {
     for (let i = 65; i < 91; i++) {
       this.word.push(String.fromCharCode(i))
     }
+    this.showArtist()
     this.getArtists()
   },
   activated () {
     // console.log('激活了')
     eventBus.$emit('backTo')
-    this.isActived = false
+    // this.isActived = false
+    this.showArtist()
   },
   deactivated () {
     console.log('缓存了')
-    this.isActived = true
+    // this.isActived = true
+    this.closeArtist()
   },
   methods: {
+    ...mapMutations(['showArtist', 'closeArtist']),
     async getArtists () {
       const { data: res } = await this.$http.get('/artist/list', {
         params: {

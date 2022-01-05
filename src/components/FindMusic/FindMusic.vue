@@ -59,13 +59,18 @@ export default {
     }
   },
   computed: {
-    ...mapState(['ifShowHighQuality'])
+    ...mapState(['ifShowHighQuality', 'ifArtistActived'])
   },
   methods: {
-    ...mapMutations(['changeHighQuality']),
-    leave () {
+    ...mapMutations(['changeHighQuality', 'closeArtist']),
+    leave (activeName, oldName) {
       if (this.ifShowHighQuality) {
         this.changeHighQuality()
+      }
+      if (oldName === 'fifth') {
+        console.log(oldName)
+        this.closeArtist()
+        console.log(this.ifArtistActived)
       }
       return true
     }
