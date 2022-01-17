@@ -1,6 +1,6 @@
 <template>
 <transition duration=500  name="el-zoom-in-center">
-  <div class="artistDetail transition-box">
+  <div class="artistDetail">
     <div class="head">
         <div class="img">
             <el-image :src="artist.img1v1Url"  style="width: 200px; height: 200px"></el-image>
@@ -96,7 +96,6 @@ export default {
     this.isActived = true
   },
   beforeRouteLeave (to, from, next) {
-    console.log(to)
     if (to.path === '/FindMusic') {
       this.clearCatch('ArtistDetail')
     }

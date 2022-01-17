@@ -210,16 +210,11 @@ export default {
     })
     // 得到之前滚动条的位置，添加到vuex中去
     eventBus.$on('backArtistDetail', () => {
-      console.log(this.$refs.main.$el.scrollTop)
       this.getArtistDetailScrollTop(this.$refs.main.$el.scrollTop)
     })
     // 当返回之前的页面，还原之前滚动条的位置
     eventBus.$on('backToArtistDetail', () => {
-      // this.$refs.main.$el.scrollTop = this.artistDetailScrollTop
-      // setTimeout(() => {
-      console.log(this.artistDetailScrollTop)
       this.$refs.main.$el.scrollTop = this.artistDetailScrollTop
-      // }, 1) // 延迟1ms后在赋值，不然可能会错位，目前尚未知道原因
     })
   },
   watch: {
@@ -248,7 +243,6 @@ export default {
       this.$router.forward()
     },
     search () {
-      // console.log(this.keyword)
       clearTimeout(this.timer)
       this.getSearchSuggest()
       this.$router.push(`/search/${this.keyword}`)
@@ -286,7 +280,7 @@ export default {
     },
     // 点击热搜榜
     hotClick (row) {
-      console.log(row.searchWord)
+      // console.log(row.searchWord)
       this.keyword = row.searchWord
       // 当keword改变之后，触发监听事件，事件是setTimeout，需要先执行，
       // 不然如果search先执行的话，showKeyword没有设置为空，搜索建议的盒子会显示出来，所以需要下一轮才执行search

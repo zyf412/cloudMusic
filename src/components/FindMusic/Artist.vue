@@ -91,14 +91,14 @@ export default {
     this.getArtists()
   },
   activated () {
-    // console.log('激活了')
-    eventBus.$emit('backTo')
-    // this.isActived = false
+    // 返回到歌手页面，有个0.5s的过渡动画
+    setTimeout(() => {
+      eventBus.$emit('backTo')
+    }, 500)
     this.showArtist()
   },
   deactivated () {
     console.log('缓存了')
-    // this.isActived = true
     this.closeArtist()
   },
   methods: {

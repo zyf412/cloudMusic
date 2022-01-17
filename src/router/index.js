@@ -53,7 +53,10 @@ const routes = [
         props: true,
         beforeEnter: (to, from, next) => {
           eventBus.$emit('backArtistDetail')
-          eventBus.$emit('changeSearchPage')
+          // 有个0.5s的过渡动画，所以需要在过渡结束之后触发
+          setTimeout(() => {
+            eventBus.$emit('changeSearchPage')
+          }, 500)
           next()
         }
       }

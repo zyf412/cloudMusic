@@ -1,6 +1,5 @@
 <template>
-<!-- <transition name="el-zoom-in-center"> -->
-  <div class="list transition-box">
+  <div class="list">
     <div class="ListHead">
       <img :src="ablum.blurPicUrl" alt="" class="img" />
       <div class="discribe">
@@ -62,7 +61,6 @@
       </el-tabs>
     </div>
   </div>
-  <!-- </transition> -->
 </template>
 
 <script>
