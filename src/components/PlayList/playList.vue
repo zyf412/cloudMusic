@@ -53,7 +53,7 @@
 
         </el-tab-pane>
         <el-tab-pane :label="'评论'+ playlist.commentCount" name="second" :lazy="true">
-          <Comment :id="id"></Comment>
+          <PlaylistComment :id="id"></PlaylistComment>
         </el-tab-pane>
         <el-tab-pane label="收藏者" name="third" :lazy="true">
           <Subscribe :id="id"></Subscribe>
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import Comment from '@/components/Comment/Comment.vue'
+import PlaylistComment from '@/components/Comment/PlayListComment.vue'
 import { mixin } from '@/mixin/mixin.js'
 import { mapMutations } from 'vuex'
 export default {
@@ -72,7 +72,7 @@ export default {
   props: ['id'],
   mixins: [mixin],
   components: {
-    Comment,
+    PlaylistComment,
     Subscribe: () => import('@/components/PlayList/subscribe.vue')
   },
   data () {

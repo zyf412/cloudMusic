@@ -32,6 +32,21 @@
         </div>
       </div>
     </div>
+    <!-- 推荐mv -->
+    <div class="newMV">
+       <h2>推荐mv ></h2>
+       <div class="box">
+           <div class="mvbox" :body-style="{ padding: '3px' }" v-for="(item, index) in newMV" :key="index" @click="goToMVDetial(item.id)">
+          <!-- <MyImage :src="item.picUrl"></MyImage> -->
+          <el-image lazy style="width: 100%; height: 200px;" :src = "item.picUrl"></el-image>
+          <div class="textBox">
+            <span>{{ item.name }}</span><br>
+            <span v-for="(artist,index) in item.artists" :key="index">{{artist.name}} </span>
+          </div>
+           </div>
+       </div>
+    </div>
+
   </div>
 </template>
 
@@ -46,7 +61,8 @@ export default {
   data () {
     return {
       personalized: [],
-      newSong: []
+      newSong: [],
+      newMV: []
     }
   },
   computed: {
@@ -55,6 +71,7 @@ export default {
   created () {
     this.getPersonalized()
     this.getPersonalizedNewSong()
+    this.getPersonalizedNewMV()
   },
   activated () {
     eventBus.$emit('backTo')
@@ -72,7 +89,7 @@ export default {
       // console.log(this.personalized)
     },
     // 得到推荐新歌
-    async getPersonalizedNewSong () {
+    async getPersonalizedNewMV () {
       const { data: res } = await this.$http.get('/personalized/newsong', {
         params: { limit: 12 }
       })
@@ -81,6 +98,17 @@ export default {
       // console.log(123)
       // console.log(res)
       console.log(this.newSong)
+    },
+    // 得到推荐的MV
+    async getPersonalizedNewSong () {
+      const { data: res } = await this.$http.get('/personalized/mv', {
+        params: { limit: 12 }
+      })
+      if (res.code !== 200) return this.$message.error('获取信息失败')
+      this.newMV = res.result
+      // console.log(123)
+      // console.log(res)
+      console.log(this.newMV)
     },
     // 跳转到歌单详情页面
     goToDetial (id) {
@@ -97,17 +125,21 @@ export default {
       if (res.code !== 200) return this.$message.error('获取信息失败')
       // console.log(res)
       this.addMusic(res.songs[0])
+    },
+    // 跳转到歌曲详情页面
+    goToMVDetial (id) {
+      this.$router.push(`/video/${id}`)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-     .personalized {
-    h2 {
+  h2 {
       display: inline-block;
       cursor: pointer;
     }
+     .personalized {
     .box {
       display: flex;
       flex-wrap: wrap;
@@ -133,10 +165,6 @@ export default {
     }
   }
   .newSong {
-    h2 {
-      display: inline-block;
-      cursor: pointer;
-    }
     .newSongContainer {
       display: flex;
       flex-wrap: wrap;
@@ -179,6 +207,31 @@ export default {
             text-overflow: ellipsis;
             white-space: nowrap;
           }
+        }
+      }
+    }
+  }
+  .newMV {
+    .box {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      .mvbox {
+        width: 23%;
+        cursor: pointer;
+        .textBox {
+          height: 40px;
+          // overflow: hidden;
+          // white-space: nowrap;
+          //  text-overflow: ellipsis;
+          //  -o-text-overflow:ellipsis;
+          text-overflow: -o-ellipsis-lastline;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
         }
       }
     }

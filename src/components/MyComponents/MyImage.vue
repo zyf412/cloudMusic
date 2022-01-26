@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-image style="width: 100%" lazy :src="src">
+    <el-image style="width: 100%" lazy :src="src" fit=fill>
       <div slot="placeholder" class="image-slot">
         <div class="slot">
           <div class="loading">

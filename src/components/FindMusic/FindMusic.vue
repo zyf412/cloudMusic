@@ -26,7 +26,7 @@
       </el-tab-pane>
       <el-tab-pane  :lazy="true" label="歌手" name="fifth">
         <keep-alive>
-        <Artist></Artist>
+        <Artist :activeName = "activeName"></Artist>
         </keep-alive>
       </el-tab-pane>
       <el-tab-pane label="最新音乐" name="sixth">最新音乐</el-tab-pane>
@@ -62,8 +62,9 @@ export default {
     ...mapState(['ifShowHighQuality', 'ifArtistActived'])
   },
   methods: {
-    ...mapMutations(['changeHighQuality', 'closeArtist']),
+    ...mapMutations(['changeHighQuality', 'closeArtist', 'changeScrollTop', 'showArtist']),
     leave (activeName, oldName) {
+      this.changeScrollTop()
       if (this.ifShowHighQuality) {
         this.changeHighQuality()
       }
@@ -71,6 +72,9 @@ export default {
         console.log(oldName)
         this.closeArtist()
         console.log(this.ifArtistActived)
+      }
+      if (activeName === 'fifth') {
+        this.showArtist()
       }
       return true
     }

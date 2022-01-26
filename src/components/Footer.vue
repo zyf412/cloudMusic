@@ -65,13 +65,14 @@
 
 <script>
 import { mapState } from 'vuex'
+import { eventBus } from '@/eventBus/eventBus.js'
 export default {
   data () {
     return {
       musicUrl: '', // 播放当前音乐的url
       // musicIdArr: [1867217766, 1874972712], // 音乐id数组
       musicIdIndex: 0,
-      isPause: true, // 是否暂停
+      isPause: false, // 是否暂停
       process: {
         percentage: 0, // 进度
         duration: 0, // 播放总时间
@@ -88,6 +89,11 @@ export default {
   created () {
     this.musicIdIndex = this.newMusicIdIndex
     this.getMusicUrl(this.musicIdArr[this.musicIdIndex])
+    eventBus.$on('gotoVideo', () => {
+      if (!this.isPause) {
+        this.changeState(this.isPause)
+      }
+    })
   },
   computed: {
     ...mapState(['musicIdArr', 'newMusicIdIndex', 'allSongInfo']),

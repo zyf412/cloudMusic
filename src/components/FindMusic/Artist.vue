@@ -22,7 +22,7 @@
         </ul>
       </div>
     </div>
-    <div class="list" ref="listRef" v-infinite-scroll="load" infinite-scroll-disabled="disabled" infinite-scroll-immediate=flase>
+    <div class="list" ref="listRef" v-infinite-scroll="load" :infinite-scroll-disabled="disabled" infinite-scroll-immediate=flase>
       <div class="image" v-for="(item, index) in artists" :key="index" @click="gotoDetail(item.id)">
         <MyImage :src="item.img1v1Url"></MyImage>
         <div class="name">{{item.name}}</div>
@@ -42,6 +42,7 @@ export default {
   components: {
     MyImage
   },
+  props: ['activeName'],
   data () {
     return {
       type: [
@@ -95,7 +96,9 @@ export default {
     setTimeout(() => {
       eventBus.$emit('backTo')
     }, 500)
-    this.showArtist()
+    if (this.activeName === 'fifth') {
+      this.showArtist()
+    }
   },
   deactivated () {
     console.log('缓存了')

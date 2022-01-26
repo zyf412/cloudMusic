@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import { eventBus } from '@/eventBus/eventBus.js'
 import CommentTable from '@/components/MyComponents/CommentTable.vue'
 export default {
   props: ['id'],
@@ -41,12 +40,12 @@ export default {
     CommentTable
   },
   created () {
-    this.getCommentPlayList()
+    this.getCommentMV()
     // console.log(this.id)
   },
   methods: {
-    async getCommentPlayList () {
-      const { data: res } = await this.$http.get('/comment/playlist', {
+    async getCommentMV () {
+      const { data: res } = await this.$http.get('/comment/mv', {
         params: {
           id: this.id,
           limit: this.limit,
@@ -63,8 +62,7 @@ export default {
     // 改变页数 ，通过事件总线去触发改变页面的事件
     currentChange (page) {
       this.offset = (page - 1) * this.limit
-      this.getCommentPlayList()
-      eventBus.$emit('changePage')
+      this.getCommentMV()
       //   this.$refs.scrollTo(top)
     }
   }
@@ -79,6 +77,12 @@ export default {
         margin-top: 8px;
     }
 }
+  .comment {
+    margin-top: 15px;
+    .newComment {
+      margin-top: 15px;
+    }
+  }
 
   .pagination {
       margin-top: 20px;

@@ -6,6 +6,8 @@ import PlayList from '@/components/PlayList/playList.vue'
 import Search from '@/components/Search/Search.vue'
 import ArtistDetail from '@/components/Artist/ArtistDetail.vue'
 import AlbumDetail from '@/components/Artist/AlbumDetail.vue'
+import Video from '@/components/Video/MV.vue'
+import AllVideo from '@/components/Video/AllVideo.vue'
 import { eventBus } from '@/eventBus/eventBus.js'
 
 Vue.use(VueRouter)
@@ -19,6 +21,7 @@ const routes = [
   {
     path: '/Home',
     component: Home,
+    redirect: '/FindMusic',
     children: [
       {
         path: '/FindMusic',
@@ -59,6 +62,20 @@ const routes = [
           }, 500)
           next()
         }
+      },
+      {
+        path: '/video/:id',
+        component: Video,
+        props: true,
+        beforeEnter: (to, from, next) => {
+          eventBus.$emit('backAllPlayList')
+          eventBus.$emit('gotoVideo')
+          next()
+        }
+      },
+      {
+        path: '/AllVideo',
+        component: AllVideo
       }
 
     ]

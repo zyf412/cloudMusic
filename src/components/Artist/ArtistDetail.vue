@@ -1,5 +1,5 @@
 <template>
-<transition duration=500  name="el-zoom-in-center">
+<transition duration=500 mode="out-in" name="el-zoom-in-center">
   <div class="artistDetail">
     <div class="head">
         <div class="img">

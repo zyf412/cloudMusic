@@ -40,6 +40,9 @@ export default new Vuex.Store({
     getScrollTop (state, scrollTop) {
       state.playListCateScrollTop = scrollTop
     },
+    changeScrollTop (state, scrollTop) {
+      state.playListCateScrollTop = 0
+    },
     // 获得歌手详情滚动条的位置
     getArtistDetailScrollTop (state, scrollTop) {
       state.artistDetailScrollTop = scrollTop

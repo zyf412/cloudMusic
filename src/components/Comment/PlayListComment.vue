@@ -79,7 +79,12 @@ export default {
         margin-top: 8px;
     }
 }
-
+    .comment {
+    margin-top: 15px;
+    .newComment {
+      margin-top: 15px;
+    }
+    }
   .pagination {
       margin-top: 20px;
       display: flex;
