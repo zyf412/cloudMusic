@@ -43,7 +43,7 @@
       <div class="showSpeaker">
         <el-button icon="el-icon-s-operation " @click="showCurrentList" circle></el-button>
         <div ref="currentListRef" class="currentList">
-          <el-table stripe :data="allSongInfo" style="width: 100%" @row-dblclick=rowDbClick>
+          <el-table :data="allSongInfo" style="width: 100%" @row-dblclick=rowDbClick :row-style="rowStyle">
             <el-table-column show-overflow-tooltip class="hidden" prop="name" width="250" label="音乐标题" >
             </el-table-column>
             <el-table-column label="歌手" width="250">
@@ -238,6 +238,17 @@ export default {
       this.musicIdIndex = this.musicIdArr.indexOf(row.id)
       this.getMusicUrl(this.musicIdArr[this.musicIdIndex])
       this.$refs.audio.play()
+    },
+    // 播放列表中的样式
+    rowStyle ({ row, rowIndex }) {
+      if (rowIndex === this.musicIdIndex) {
+        return {
+          color: '#ff4e4e',
+          backgroundColor: '#f6cccc'
+        }
+      } else {
+        return ''
+      }
     }
   }
 }

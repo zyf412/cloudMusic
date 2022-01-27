@@ -14,22 +14,22 @@
                 <span>发现音乐</span>
               </template>
             </el-menu-item>
-
+<!--
             <el-menu-item index="2">
               <span slot="title">播客</span>
-            </el-menu-item>
+            </el-menu-item> -->
 
             <el-menu-item index="/AllVideo">
               <span slot="title">视频</span>
             </el-menu-item>
 
-            <el-menu-item index="4">
+            <!-- <el-menu-item index="4">
               <span slot="title">朋友</span>
-            </el-menu-item>
+            </el-menu-item> -->
 
-            <el-menu-item index="5">
+            <!-- <el-menu-item index="5">
               <span slot="title">直播</span>
-            </el-menu-item>
+            </el-menu-item> -->
 
             <el-menu-item index="6">
               <span slot="title">私人FM</span>

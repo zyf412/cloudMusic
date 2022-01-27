@@ -55,7 +55,7 @@ export default {
     },
     // 得到当前播放时间
     undateTime () {
-      this.process.currentTime = this.$refs.video.currentTime
+      if (this.$refs.video) this.process.currentTime = this.$refs.video.currentTime
     },
     // 过滤时间
     flterTime (time) {

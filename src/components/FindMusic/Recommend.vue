@@ -37,8 +37,9 @@
        <h2>推荐mv ></h2>
        <div class="box">
            <div class="mvbox" :body-style="{ padding: '3px' }" v-for="(item, index) in newMV" :key="index" @click="goToMVDetial(item.id)">
-          <!-- <MyImage :src="item.picUrl"></MyImage> -->
-          <el-image lazy style="width: 100%; height: 200px;" :src = "item.picUrl"></el-image>
+          <MyImage :src="item.picUrl" :setStyle="'width: 100%; height: 200px;'"></MyImage>
+
+          <!-- <el-image lazy style="width: 100%; height: 200px;" :src = "item.picUrl"></el-image> -->
           <div class="textBox">
             <span>{{ item.name }}</span><br>
             <span v-for="(artist,index) in item.artists" :key="index">{{artist.name}} </span>
@@ -148,7 +149,7 @@ export default {
         width: 18%;
         cursor: pointer;
         .textBox {
-          height: 40px;
+          // height: 40px;
           // overflow: hidden;
           // white-space: nowrap;
           //  text-overflow: ellipsis;
@@ -220,7 +221,7 @@ export default {
         width: 23%;
         cursor: pointer;
         .textBox {
-          height: 40px;
+          // height: 40px;
           // overflow: hidden;
           // white-space: nowrap;
           //  text-overflow: ellipsis;

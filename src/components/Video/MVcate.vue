@@ -4,28 +4,27 @@
       <div class="area">
         <div>语种:</div>
         <ul>
-          <li v-for="(item, index) in area" :style="areaIndex===index?selectedStyle:''" :key="index" @click="changeArea(item[0],index)">{{item[1]}}</li>
+          <li v-for="(item, index) in area" :style="areaID===item?selectedStyle:''" :key="index" @click="changeArea(item)">{{item}}</li>
         </ul>
       </div>
       <div class="type">
         <div>分类:</div>
         <ul>
-          <li :style="typeIndex===index?selectedStyle:''" v-for="(item, index) in type" :key="index" @click="changeType(item[0],index)">{{item[1]}}</li>
+          <li :style="typeID===item?selectedStyle:''" v-for="(item, index) in type" :key="index" @click="changeType(item)">{{item}}</li>
         </ul>
       </div>
       <div class="word">
         <div>筛选:</div>
         <ul>
-          <li :style="wordIndex===-1?selectedStyle:''" class="s" @click="changeInitial(-1,-1)">热门</li>
-          <li :style="wordIndex===item?selectedStyle:''" v-for="(item, index) in word" :key="index" @click="changeInitial(item,item)">{{item}}</li>
-          <li :style="wordIndex===0?selectedStyle:''" @click="changeInitial(0,0)">#</li>
+          <li :style="orderID===item?selectedStyle:''" v-for="(item, index) in order" :key="index" @click="changeOrder(item)">{{item}}</li>
         </ul>
       </div>
     </div>
     <div class="list" ref="listRef" v-infinite-scroll="load" :infinite-scroll-disabled="disabled" infinite-scroll-immediate=flase>
-      <div class="image" v-for="(item, index) in artists" :key="index" @click="gotoDetail(item.id)">
-        <MyImage :setStyle="''" :src="item.img1v1Url"></MyImage>
-        <div class="name">{{item.name}}</div>
+      <div class="image" v-for="(item, index) in MVlist" :key="index" @click="gotoDetail(item.id)">
+        <MyImage :setStyle="style" :src="item.cover"></MyImage>
+        <div :title="item.name" class="MVname">{{item.name}}</div>
+        <div class="name">{{item.artistName}}</div>
       </div>
     </div>
     <p v-if="loading">加载中...</p>
@@ -45,120 +44,99 @@ export default {
   props: ['activeName'],
   data () {
     return {
-      type: [
-        [-1, '全部'],
-        [1, '男歌手'],
-        [2, '女歌手'],
-        [3, '乐队组合']
-      ],
-      area: [
-        [-1, '全部'],
-        [7, '华语'],
-        [96, '欧美'],
-        [8, '日本'],
-        [16, '韩国'],
-        [0, '其他']
-      ],
+      type: ['全部', '官方版', '原声', '现场版', '网易出品'],
+      area: ['全部', '内地', '港台', '欧美', '日本', '韩国'],
+      order: ['上升最快', '最热', '最新'],
+      areaID: '全部',
+      typeID: '全部',
+      orderID: '上升最快',
       limit: 30, // 每页数量
       offset: 0, // 偏移量
       isMore: false, // 是否还有更多
       loading: false,
-      // isActived: false,
-      word: [], // 首字母
-      artists: [],
+      MVlist: [],
       page: 0,
-      areaID: -1,
-      typeID: -1,
-      initial: -1, // 筛选  热门为-1， #号为0 其他传递字母
-      areaIndex: 0,
-      typeIndex: 0,
-      wordIndex: -1,
       selectedStyle: {
         backgroundColor: '#fdeded'
-      }
+      },
+      style: 'width:100%;height:150px;'
     }
   },
   computed: {
-    ...mapState(['ifArtistActived']),
+    ...mapState(['ifMVActived']),
     disabled () {
-      return this.ifArtistActived || (this.loading || !this.isMore)
+      return this.ifMVActived || this.loading || !this.isMore
     }
   },
   created () {
-    for (let i = 65; i < 91; i++) {
-      this.word.push(String.fromCharCode(i))
-    }
-    this.showArtist()
-    this.getArtists()
+    this.showMV()
+    this.getMVlist()
   },
   activated () {
-    // 返回到歌手页面，有个0.5s的过渡动画
-    setTimeout(() => {
-      eventBus.$emit('backTo')
-    }, 500)
-    if (this.activeName === 'fifth') {
-      this.showArtist()
+    // setTimeout(() => {
+    eventBus.$emit('backTo')
+    // }, 500)
+    if (this.activeName === 'second') {
+      this.showMV()
     }
   },
   deactivated () {
-    console.log('缓存了')
-    this.closeArtist()
+    // console.log('缓存了')
+    this.closeMV()
   },
   methods: {
-    ...mapMutations(['showArtist', 'closeArtist']),
-    async getArtists () {
-      const { data: res } = await this.$http.get('/artist/list', {
+    ...mapMutations(['showMV', 'closeMV']),
+    async getMVlist () {
+      const { data: res } = await this.$http.get('/mv/all', {
         params: {
           area: this.areaID,
           type: this.typeID,
-          initial: this.initial,
+          order: this.orderID,
           offset: this.offset,
           limit: this.limit
         }
       })
       if (res.code !== 200) return this.$message.error('获取信息失败')
-      this.artists = [...this.artists, ...res.artists]
-      this.isMore = res.more
+      this.MVlist = [...this.MVlist, ...res.data]
+      this.isMore = res.hasMore
     },
     load () {
       this.loading = true
       setTimeout(() => {
         this.page++
         this.offset = this.page * this.limit
-        this.getArtists()
+        this.getMVlist()
         this.loading = false
       }, 2000)
     },
-    // 改变语种
-    changeArea (areaID, index) {
+    // 改变地区
+    changeArea (areaID) {
       this.page = 0
       this.offset = 0
       this.areaID = areaID
-      this.artists = []
-      this.areaIndex = index
-      this.getArtists()
+      this.MVlist = []
+      this.getMVlist()
     },
-    // 改变分类
-    changeType (typeID, index) {
+    // 改变类型
+    changeType (typeID) {
       this.page = 0
       this.offset = 0
       this.typeID = typeID
-      this.artists = []
-      this.typeIndex = index
-      this.getArtists()
+      this.MVlist = []
+      this.getMVlist()
     },
-    // 改变筛选
-    changeInitial (initial, index) {
+    // 改变排序
+    changeOrder (orderID) {
       this.page = 0
       this.offset = 0
-      this.initial = initial
-      this.artists = []
-      this.wordIndex = index
-      this.getArtists()
+      this.orderID = orderID
+      console.log(orderID)
+      this.MVlist = []
+      this.getMVlist()
     },
     // 跳转到歌手详情页面
     gotoDetail (id) {
-      this.$router.push(`/artistDetail/${id}`)
+      this.$router.push(`/video/${id}`)
     }
   }
 }
@@ -173,6 +151,9 @@ ul {
   }
 }
 .artist {
+  width: 100%;
+  // height: 100%;
+  // overflow-y: auto;
   .cate {
     font-size: 13px;
     .area,
@@ -208,9 +189,20 @@ ul {
       margin-right: 15px;
       margin-bottom: 15px;
       cursor: pointer;
+      .MVname {
+        font-size: 14px;
+          text-overflow: -o-ellipsis-lastline;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
       .name {
-        margin-top: 8px;
-        height: 40px;
+        font-size: 13px;
+        color: #ccc;
+
       }
     }
   }
