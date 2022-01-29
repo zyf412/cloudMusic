@@ -51,7 +51,7 @@ export default {
     },
     // 得到视频时常
     getDuration () {
-      this.process.duration = this.$refs.video.duration
+      if (this.$refs.video) this.process.duration = this.$refs.video.duration
     },
     // 得到当前播放时间
     undateTime () {

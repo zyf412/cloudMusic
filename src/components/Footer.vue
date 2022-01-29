@@ -158,7 +158,7 @@ export default {
     },
     // 得到当前播放时间
     undateTime () {
-      this.process.currentTime = this.$refs.audio.currentTime
+      if (this.$refs.audio) this.process.currentTime = this.$refs.audio.currentTime
     },
     // 进度条text
     format () {

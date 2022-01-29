@@ -21,7 +21,16 @@
 
 <script>
 export default {
-  props: ['src', 'setStyle'],
+  props: {
+    src: {
+      type: String,
+      default: ''
+    },
+    setStyle: {
+      type: String,
+      default: ''
+    }
+  },
   data () {
     return {
       Style: 'width:100%'

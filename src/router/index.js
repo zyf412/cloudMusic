@@ -6,8 +6,10 @@ import PlayList from '@/components/PlayList/playList.vue'
 import Search from '@/components/Search/Search.vue'
 import ArtistDetail from '@/components/Artist/ArtistDetail.vue'
 import AlbumDetail from '@/components/Artist/AlbumDetail.vue'
-import Video from '@/components/Video/MV.vue'
+import MV from '@/components/Video/MV.vue'
+import Video from '@/components/Video/Video.vue'
 import AllVideo from '@/components/Video/AllVideo.vue'
+
 import { eventBus } from '@/eventBus/eventBus.js'
 
 Vue.use(VueRouter)
@@ -64,18 +66,30 @@ const routes = [
         }
       },
       {
-        path: '/video/:id',
-        component: Video,
+        path: '/mv/:id',
+        component: MV,
         props: true,
         beforeEnter: (to, from, next) => {
-          eventBus.$emit('backAllPlayList')
-          eventBus.$emit('gotoVideo')
+          if (from.path === '/AllVideo' || from.path === '/FindMusic') {
+            eventBus.$emit('backAllPlayList')
+            eventBus.$emit('gotoVideo')
+          }
           next()
         }
       },
       {
         path: '/AllVideo',
         component: AllVideo
+      },
+      {
+        path: '/video/:id',
+        component: Video,
+        props: true
+        // beforeEnter: (to, from, next) => {
+        //   // eventBus.$emit('backAllPlayList')?4
+        //   // eventBus.$emit('gotoVideo')
+        //   next()
+        // }
       }
 
     ]

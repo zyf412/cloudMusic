@@ -136,7 +136,7 @@ export default {
     },
     // 跳转到歌手详情页面
     gotoDetail (id) {
-      this.$router.push(`/video/${id}`)
+      this.$router.push(`/mv/${id}`)
     }
   }
 }

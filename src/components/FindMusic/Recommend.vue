@@ -129,7 +129,7 @@ export default {
     },
     // 跳转到歌曲详情页面
     goToMVDetial (id) {
-      this.$router.push(`/video/${id}`)
+      this.$router.push(`/mv/${id}`)
     }
   }
 }
