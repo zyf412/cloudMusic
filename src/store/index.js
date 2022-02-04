@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    musicIdArr: [1867217766, 1874972712],
+    musicIdArr: [],
     newMusicIdIndex: 0,
     allSongInfo: [],
     playListCate: '全部',

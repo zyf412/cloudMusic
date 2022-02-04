@@ -144,7 +144,7 @@ export default {
     })
     // 当返回之前的页面，还原之前滚动条的位置
     eventBus.$on('backTo', () => {
-      this.$refs.main.$el.scrollTop = this.playListCateScrollTop
+      if (this.$refs.main) this.$refs.main.$el.scrollTop = this.playListCateScrollTop
     })
     // 得到之前滚动条的位置，添加到vuex中去
     eventBus.$on('backArtistDetail', () => {

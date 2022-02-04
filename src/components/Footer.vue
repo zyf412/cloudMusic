@@ -134,6 +134,7 @@ export default {
     async getMusicUrl (id) {
       // console.log(data)
       // if (!check.success) return this.$message.error(check.message)
+      if (!id) return
       const { data: res } = await this.$http.get('/song/url', {
         params: { id }
       })
