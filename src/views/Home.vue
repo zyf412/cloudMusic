@@ -31,32 +31,32 @@
               <span slot="title">直播</span>
             </el-menu-item> -->
 
-            <el-menu-item index="6">
+            <!-- <el-menu-item index="6">
               <span slot="title">私人FM</span>
-            </el-menu-item>
+            </el-menu-item> -->
 
             <el-menu-item-group>
               <template slot="title">我的音乐</template>
 
-              <el-menu-item index="7">
+              <!-- <el-menu-item index="7">
                 <i class="el-icon-location"></i>
                 <span slot="title">本地与下载</span>
-              </el-menu-item>
+              </el-menu-item> -->
 
               <el-menu-item index="8">
                 <i class="el-icon-location"></i>
                 <span slot="title">最近播放</span>
               </el-menu-item>
 
-              <el-menu-item index="9">
+              <!-- <el-menu-item index="9">
                 <i class="el-icon-location"></i>
                 <span slot="title">我的音乐云盘</span>
-              </el-menu-item>
+              </el-menu-item> -->
 
-              <el-menu-item index="10">
+              <!-- <el-menu-item index="10">
                 <i class="el-icon-location"></i>
                 <span slot="title">我的播客</span>
-              </el-menu-item>
+              </el-menu-item> -->
 
               <el-menu-item index="11">
                 <i class="el-icon-location"></i>
@@ -72,8 +72,7 @@
               </template>
 
               <el-menu-item-group>
-                <el-menu-item index="12-1">选项1</el-menu-item>
-                <el-menu-item index="12-2">选项2</el-menu-item>
+                <el-menu-item :title="item.name" v-for="item in userPlaylist" :key="item.id" @click="gotoPlaylist(item.id)" >{{item.name}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
@@ -82,6 +81,10 @@
                 <i class="el-icon-location"></i>
                 <span>收藏的歌单</span>
               </template>
+
+              <el-menu-item-group>
+                <el-menu-item :title="item.name" v-for="item in subscribedPlaylist" :key="item.id" @click="gotoPlaylist(item.id)" >{{item.name}}</el-menu-item>
+              </el-menu-item-group>
             </el-submenu>
           </el-menu>
         </el-aside>
@@ -116,15 +119,18 @@ export default {
   },
   data () {
     return {
-      isCollapse: false
+      isCollapse: false,
       // navState: ''
+      userPlaylist: [],
+      subscribedPlaylist: []
     }
   },
   computed: {
     ...mapState([
       'playListCateScrollTop',
       'artistDetailScrollTop',
-      'mainKeepAliveArr'
+      'mainKeepAliveArr',
+      'uid'
     ])
   },
   created () {
@@ -154,10 +160,27 @@ export default {
     eventBus.$on('backToArtistDetail', () => {
       if (this.$refs.main) this.$refs.main.$el.scrollTop = this.artistDetailScrollTop
     })
+    // this.getUserPlaylist(this.uid)
   },
-
+  watch: {
+    uid (newName, oldName) {
+      this.getUserPlaylist(newName)
+    }
+  },
   methods: {
-    ...mapMutations(['getScrollTop', 'getArtistDetailScrollTop'])
+    ...mapMutations(['getScrollTop', 'getArtistDetailScrollTop']),
+    async getUserPlaylist (uid) {
+      if (uid === null) return
+      const { data: res } = await this.$http.get('/user/playlist', {
+        params: { uid }
+      })
+      if (res.code !== 200) return this.$message.error('获取用户歌单失败')
+      this.userPlaylist = res.playlist.filter(item => item.subscribed === false)
+      this.subscribedPlaylist = res.playlist.filter(item => item.subscribed === true)
+    },
+    gotoPlaylist (id) {
+      this.$router.push(`/playList/${id}`)
+    }
   }
 }
 </script>
@@ -195,6 +218,10 @@ export default {
     .el-menu-item {
       height: 40px;
       line-height: 40px;
+       overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color: #fff !important;
     }
   }
   .el-footer {

@@ -239,14 +239,14 @@ export default {
       })
       if (res.data.code !== 200) return this.$message.error('获取状态失败')
       this.profile = res.data.profile
-      if (res.data.profile) this.setLogin()
+      if (res.data.profile) this.setLogin(res.data.profile.userId)
     },
     // 登录后子组件传入用户信息
     getUserInfo (profile) {
       this.profile = profile
       if (profile) {
         this.showLogin = !this.showLogin
-        this.setLogin()
+        this.setLogin(profile.userId)
       }
     }
   }

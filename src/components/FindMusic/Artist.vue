@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="list" ref="listRef" v-infinite-scroll="load" :infinite-scroll-disabled="disabled" infinite-scroll-immediate=flase>
-      <div class="image" v-for="(item, index) in artists" :key="index" @click="gotoDetail(item.id)">
+      <div class="image" v-for="(item) in artists" :key="item.id" @click="gotoDetail(item.id)">
         <MyImage :setStyle="''" :src="item.img1v1Url"></MyImage>
         <div class="name">{{item.name}}</div>
       </div>

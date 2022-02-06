@@ -17,7 +17,8 @@ export default new Vuex.Store({
     ifMVActived: false, // mv分类是否显示
     ifVideoActived: false, // 视频分类是否显示
     ifLogin: false, // 是否登录
-    videoCate: '全部视频'
+    videoCate: '全部视频',
+    uid: null // 用户ID
   },
   mutations: {
     // 获得播放列表
@@ -90,12 +91,15 @@ export default new Vuex.Store({
       state.videoCate = name
     },
     // 记录登录
-    setLogin (state) {
+    setLogin (state, uid) {
       state.ifLogin = true
+      state.uid = uid
+      console.log(uid)
     },
     // 记录退出
     setLogout (state) {
       state.ifLogin = false
+      state.uid = null
     },
     // ifArtistActived 歌手分类显示
     showVideo (state) {

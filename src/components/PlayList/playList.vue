@@ -88,6 +88,11 @@ export default {
     this.getListDetail(this.id)
     console.log(this.id)
   },
+  watch: {
+    $route (to, from) {
+      this.getListDetail(this.id)
+    }
+  },
   methods: {
     ...mapMutations(['getMusicIdList']),
     // 得到歌单音乐id
