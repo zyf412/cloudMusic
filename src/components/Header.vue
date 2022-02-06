@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import Login from '@/components/MyComponents/Login.vue'
 export default {
   inject: ['reload'],
@@ -117,6 +118,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setLogin', 'setLogout']),
     back () {
       this.$router.back()
     },
@@ -216,6 +218,7 @@ export default {
           console.log(res)
           if (res.code !== 200) return this.$message.error('退出失败')
           // this.status()
+          this.setLogout()
           this.$message.success('退出成功')
           this.reload()
         })
@@ -234,16 +237,16 @@ export default {
         },
         withCredentials: true
       })
-      console.log('获取登录状态')
-      console.log(res)
       if (res.data.code !== 200) return this.$message.error('获取状态失败')
       this.profile = res.data.profile
+      if (res.data.profile) this.setLogin()
     },
     // 登录后子组件传入用户信息
     getUserInfo (profile) {
       this.profile = profile
       if (profile) {
         this.showLogin = !this.showLogin
+        this.setLogin()
       }
     }
   }

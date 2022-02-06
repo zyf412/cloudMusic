@@ -84,12 +84,12 @@ const routes = [
       {
         path: '/video/:id',
         component: Video,
-        props: true
-        // beforeEnter: (to, from, next) => {
-        //   // eventBus.$emit('backAllPlayList')?4
-        //   // eventBus.$emit('gotoVideo')
-        //   next()
-        // }
+        props: true,
+        beforeEnter: (to, from, next) => {
+          eventBus.$emit('backAllPlayList')
+          eventBus.$emit('gotoVideo')
+          next()
+        }
       }
 
     ]

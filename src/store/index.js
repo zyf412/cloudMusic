@@ -14,7 +14,10 @@ export default new Vuex.Store({
     artistDetailScrollTop: 0, // 歌手详情滚动条的位置
     ifArtistActived: false, // 歌手分类是否显示
     mainKeepAliveArr: ['AllVideo', 'FindMusic', 'ArtistDetail'], // 缓存组件列表
-    ifMVActived: false // mv分类是否显示
+    ifMVActived: false, // mv分类是否显示
+    ifVideoActived: false, // 视频分类是否显示
+    ifLogin: false, // 是否登录
+    videoCate: '全部视频'
   },
   mutations: {
     // 获得播放列表
@@ -81,6 +84,26 @@ export default new Vuex.Store({
     // ifArtistActived 歌手分类关闭
     closeMV (state) {
       state.ifMVActived = true
+    },
+    // 改变视频分类
+    changeVideoCate (state, name) {
+      state.videoCate = name
+    },
+    // 记录登录
+    setLogin (state) {
+      state.ifLogin = true
+    },
+    // 记录退出
+    setLogout (state) {
+      state.ifLogin = false
+    },
+    // ifArtistActived 歌手分类显示
+    showVideo (state) {
+      state.ifVideoActived = false
+    },
+    // ifArtistActived 歌手分类关闭
+    closeVideo (state) {
+      state.ifVideoActived = true
     }
   },
   actions: {
