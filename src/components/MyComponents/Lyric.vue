@@ -47,14 +47,16 @@ export default {
     },
     currentTime (newdate, olddate) {
       // 找到比当前时间大的歌词index
-      const index = this.lyricArr.findIndex(item => {
-        return this.currentTime < item[0]
-      })
-      // 如果有歌词的时间比当前时间大,说明返回的时索引,索引减1,就是当前歌词的位置
-      // 如果index-1,那么当前歌词的位置就是最后一句
-      this.lyricIndex = index === -1 ? this.lyricIndex : index - 1
-      if (newdate > this.lyricArr[this.lyricArr.length - 1][0]) {
-        this.lyricIndex = this.lyricArr.length - 1
+      if (this.lyricArr.length !== 0) {
+        const index = this.lyricArr.findIndex(item => {
+          return this.currentTime < item[0]
+        })
+        // 如果有歌词的时间比当前时间大,说明返回的时索引,索引减1,就是当前歌词的位置
+        // 如果index-1,那么当前歌词的位置就是最后一句
+        this.lyricIndex = index === -1 ? this.lyricIndex : index - 1
+        if (newdate > this.lyricArr[this.lyricArr.length - 1][0]) {
+          this.lyricIndex = this.lyricArr.length - 1
+        }
       }
     },
     lyricIndex () {

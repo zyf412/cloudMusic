@@ -35,7 +35,7 @@
     </div>
     <div class="footerRight">
       <div class="showSpeaker">
-        <el-button icon="el-icon-bell" size="" circle></el-button>
+        <el-button icon="el-icon-headset" size="" circle></el-button>
         <div class="speaker">
           <el-slider v-model="volume" vertical height="100px" :show-tooltip="false" @change="changeVolume"></el-slider>
         </div>

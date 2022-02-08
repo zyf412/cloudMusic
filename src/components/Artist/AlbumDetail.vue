@@ -53,10 +53,7 @@
 
         </el-tab-pane>
         <el-tab-pane :label="'评论'+ commentCount" name="second" :lazy="true">
-          <Comment :id="id"></Comment>
-        </el-tab-pane>
-        <el-tab-pane label="收藏者" name="third" :lazy="true">
-          <Subscribe :id="id"></Subscribe>
+          <AlbumComment :id="id"></AlbumComment>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -65,11 +62,15 @@
 
 <script>
 // import { eventBus } from '@/eventBus/eventBus.js'
+import AlbumComment from '@/components/Comment/AlbumComment.vue'
 import { mapMutations } from 'vuex'
 import { mixin } from '@/mixin/mixin.js'
 export default {
   props: ['id'],
   mixins: [mixin],
+  components: {
+    AlbumComment
+  },
   data () {
     return {
       ablum: {},

@@ -9,7 +9,7 @@ import AlbumDetail from '@/components/Artist/AlbumDetail.vue'
 import MV from '@/components/Video/MV.vue'
 import Video from '@/components/Video/Video.vue'
 import AllVideo from '@/components/Video/AllVideo.vue'
-
+import Collection from '@/components/Collection/Collection.vue'
 import { eventBus } from '@/eventBus/eventBus.js'
 
 Vue.use(VueRouter)
@@ -57,6 +57,8 @@ const routes = [
         component: AlbumDetail,
         props: true,
         beforeEnter: (to, from, next) => {
+          console.log(111111)
+          console.log(from)
           eventBus.$emit('backArtistDetail')
           // 有个0.5s的过渡动画，所以需要在过渡结束之后触发
           setTimeout(() => {
@@ -90,6 +92,10 @@ const routes = [
           eventBus.$emit('gotoVideo')
           next()
         }
+      },
+      {
+        path: '/Collection',
+        component: Collection
       }
 
     ]

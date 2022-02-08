@@ -96,7 +96,8 @@ export default {
     this.isActived = true
   },
   beforeRouteLeave (to, from, next) {
-    if (to.path === '/FindMusic') {
+    // 清除缓存
+    if (to.path === '/FindMusic' || to.path === '/Collection') {
       this.clearCatch('ArtistDetail')
     }
     next()

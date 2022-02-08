@@ -11,6 +11,7 @@
           <el-menu background-color="#333744" text-color="#fff" active-text-color="#409EFF" unique-opened :collapse="isCollapse" :collapse-transition="false" router>
             <el-menu-item index="/FindMusic">
               <template slot="title">
+                <i class="el-icon-view"></i>
                 <span>发现音乐</span>
               </template>
             </el-menu-item>
@@ -20,6 +21,7 @@
             </el-menu-item> -->
 
             <el-menu-item index="/AllVideo">
+             <i class="el-icon-video-camera-solid"></i>
               <span slot="title">视频</span>
             </el-menu-item>
 
@@ -43,10 +45,10 @@
                 <span slot="title">本地与下载</span>
               </el-menu-item> -->
 
-              <el-menu-item index="8">
+              <!-- <el-menu-item index="8">
                 <i class="el-icon-location"></i>
                 <span slot="title">最近播放</span>
-              </el-menu-item>
+              </el-menu-item> -->
 
               <!-- <el-menu-item index="9">
                 <i class="el-icon-location"></i>
@@ -58,8 +60,8 @@
                 <span slot="title">我的播客</span>
               </el-menu-item> -->
 
-              <el-menu-item index="11">
-                <i class="el-icon-location"></i>
+              <el-menu-item index="/Collection">
+                <i class="el-icon-collection"></i>
                 <span slot="title">我的收藏</span>
               </el-menu-item>
 
@@ -78,7 +80,7 @@
 
             <el-submenu index="13">
               <template slot="title">
-                <i class="el-icon-location"></i>
+                <i class="el-icon-star-on"></i>
                 <span>收藏的歌单</span>
               </template>
 
@@ -142,7 +144,7 @@ export default {
     // 通过事件总线，监听换页，移动滚动条
     // 搜索页面 直接回到顶部
     eventBus.$on('changeSearchPage', () => {
-      this.$refs.main.$el.scrollTop = 0
+      if (this.$refs.main) this.$refs.main.$el.scrollTop = 0
     })
     // 得到之前滚动条的位置，添加到vuex中去
     eventBus.$on('backAllPlayList', () => {
@@ -154,7 +156,7 @@ export default {
     })
     // 得到之前滚动条的位置，添加到vuex中去
     eventBus.$on('backArtistDetail', () => {
-      this.getArtistDetailScrollTop(this.$refs.main.$el.scrollTop)
+      if (this.$refs.main) this.getArtistDetailScrollTop(this.$refs.main.$el.scrollTop)
     })
     // 当返回之前的页面，还原之前滚动条的位置
     eventBus.$on('backToArtistDetail', () => {

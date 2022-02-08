@@ -4,7 +4,7 @@
     <div class="personalized">
       <h2>推荐歌单 ></h2>
       <div class="box">
-        <el-card :body-style="{ padding: '3px' }" v-for="(item, index) in personalized" :key="index" @click.native="goToDetial(item.id)">
+        <el-card :body-style="{ padding: '3px' }" v-for="item in personalized" :key="item.id" @click.native="goToDetial(item.id)">
           <MyImage :src="item.picUrl"></MyImage>
           <div class="textBox">
             <span>{{ item.name }}</span>
@@ -16,7 +16,7 @@
     <div class="newSong">
       <h2>最新音乐 ></h2>
       <div class="newSongContainer">
-        <div class="Song" v-for="(item, index) in newSong" :key="index">
+        <div class="Song" v-for="(item) in newSong" :key="item.id">
           <div class="avatar" @click="playNewSong(item.id)">
             <div class="image"><MyImage :src="item.picUrl"></MyImage></div>
           </div>
@@ -25,7 +25,7 @@
               <span :title="item.name">{{ item.name }} </span><span v-if="item.song.alias.length" :title="item.song.alias[0] " class="alias">({{ item.song.alias[0] }})</span>
             </div>
             <div v-if="item.song.artists" class="songer">
-              <span :title=" item2.name " v-for="(item2, index2) in item.song.artists" :key="index2">{{ item2.name }}
+              <span :title=" item2.name " v-for="item2 in item.song.artists" :key="item2.id">{{ item2.name }}
               </span>
             </div>
           </div>
@@ -36,13 +36,13 @@
     <div class="newMV">
        <h2>推荐mv ></h2>
        <div class="box">
-           <div class="mvbox" :body-style="{ padding: '3px' }" v-for="(item, index) in newMV" :key="index" @click="goToMVDetial(item.id)">
+           <div class="mvbox" :body-style="{ padding: '3px' }" v-for="item in newMV" :key="item.id" @click="goToMVDetial(item.id)">
           <MyImage :src="item.picUrl" :setStyle="'width: 100%; height: 200px;'"></MyImage>
 
           <!-- <el-image lazy style="width: 100%; height: 200px;" :src = "item.picUrl"></el-image> -->
           <div class="textBox">
             <span>{{ item.name }}</span><br>
-            <span v-for="(artist,index) in item.artists" :key="index">{{artist.name}} </span>
+            <span v-for="artist in item.artists" :key="artist.id">{{artist.name}} </span>
           </div>
            </div>
        </div>

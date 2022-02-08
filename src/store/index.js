@@ -13,9 +13,10 @@ export default new Vuex.Store({
     ifShowHighQuality: false, // 是否显示精品歌单，默认是false
     artistDetailScrollTop: 0, // 歌手详情滚动条的位置
     ifArtistActived: false, // 歌手分类是否显示
-    mainKeepAliveArr: ['AllVideo', 'FindMusic', 'ArtistDetail'], // 缓存组件列表
+    mainKeepAliveArr: ['AllVideo', 'FindMusic', 'ArtistDetail', 'Collection'], // 缓存组件列表
     ifMVActived: false, // mv分类是否显示
     ifVideoActived: false, // 视频分类是否显示
+    ifSubVideoActived: false, // 视频收藏是否显示
     ifLogin: false, // 是否登录
     videoCate: '全部视频',
     uid: null // 用户ID
@@ -108,6 +109,14 @@ export default new Vuex.Store({
     // ifArtistActived 歌手分类关闭
     closeVideo (state) {
       state.ifVideoActived = true
+    },
+    // ifSubVideoActived 歌手分类显示
+    showSubVideo (state) {
+      state.ifSubVideoActived = false
+    },
+    // ifSubVideoActived 歌手分类关闭
+    closeSubVideo (state) {
+      state.ifSubVideoActived = true
     }
   },
   actions: {

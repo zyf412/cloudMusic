@@ -2,7 +2,7 @@
   <div class="MV">
     <div class="MVcontainer">
       <div class="left">
-        <h4>MV详情</h4>
+        <h4>视频详情</h4>
         <VideoPlayer :src="VideoSrc"></VideoPlayer>
         <div class="avater">
           <el-image  style="width: 50px; height: 50px; border-radius:50% " lazy :src="Videoinfo.avatarUrl"></el-image>
