@@ -16,7 +16,7 @@
     <!-- 歌单列表 -->
     <div class="playList" v-infinite-scroll="load" :infinite-scroll-disabled="disabled" infinite-scroll-immediate=flase>
       <!-- 歌单盒子 -->
-      <div class="playListBox" v-for="(item,index) in highPlaylist" :key="index" @click="goToDetial(item.id)">
+      <div class="playListBox" v-for="item in highPlaylist" :key="item.id" @click="goToDetial(item.id)">
         <div class="image">
           <MyImage :src="item.coverImgUrl" ></MyImage>
         </div>

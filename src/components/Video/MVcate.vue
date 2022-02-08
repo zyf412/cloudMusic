@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="list" ref="listRef" v-infinite-scroll="load" :infinite-scroll-disabled="disabled" infinite-scroll-immediate=flase>
-      <div class="image" v-for="(item, index) in MVlist" :key="index" @click="gotoDetail(item.id)">
+      <div class="image" v-for="item in MVlist" :key="item.id" @click="gotoDetail(item.id)">
         <MyImage :setStyle="style" :src="item.cover"></MyImage>
         <div :title="item.name" class="MVname">{{item.name}}</div>
         <div class="name">{{item.artistName}}</div>

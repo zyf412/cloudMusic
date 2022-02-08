@@ -15,7 +15,7 @@
       </div>
       <div class="right">
         <h4>相关推荐</h4>
-        <div class="recommendBox" v-for="(item,index) in relatedVideo" :key="index">
+        <div class="recommendBox" v-for="item in relatedVideo" :key="item.vid">
           <div class="image" @click="goToMVDetial(item.vid)">
             <el-image lazy :src="item.coverUrl"></el-image>
           </div>

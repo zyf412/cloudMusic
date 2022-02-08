@@ -94,8 +94,6 @@ export default {
           overflow: hidden;
           cursor: pointer;
         }
-        .songs {
-        }
       }
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="subscribeContainer">
-    <div class="subscribe" v-for="(item,index) in subscribers" :key="index">
+    <div class="subscribe" v-for="(item) in subscribers" :key="item.id">
       <div><el-avatar :size="90" :src="item.avatarUrl"></el-avatar></div>
       <div class="info">
         <span>{{item.nickname}}</span>

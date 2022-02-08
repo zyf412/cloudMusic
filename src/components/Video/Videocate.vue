@@ -16,7 +16,7 @@
       </div>
     </div>
      <div class="list" ref="listRef" v-infinite-scroll="load" :infinite-scroll-disabled="disabled" infinite-scroll-immediate=flase>
-      <div class="image" v-for="(item, index) in videoList" :key="index" @click="gotoDetail(item.data.vid)">
+      <div class="image" v-for="item in videoList" :key="item.data.vid" @click="gotoDetail(item.data.vid)">
         <MyImage :setStyle="style" :src="item.data.coverUrl"></MyImage>
         <div :title="item.data.title" class="MVname">{{item.data.title}}</div>
         <div class="name" v-if="item.data.creator">{{item.data.creator.nickname}}</div>
@@ -60,7 +60,6 @@ export default {
   },
   activated () {
     // setTimeout(() => {
-    console.log(111111)
     eventBus.$emit('backTo')
     // }, 500)
     if (this.activeName === 'first') {
