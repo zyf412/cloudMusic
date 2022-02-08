@@ -1,8 +1,8 @@
 <template>
   <div class="footer">
     <div class="footerLeft">
-      <div class="img">
-        <el-avatar :size="50" shape="square" v-if="allSongInfo[musicIdIndex]" :src="allSongInfo[musicIdIndex].al.picUrl"></el-avatar>
+      <div class="img" @click="showLyric = !showLyric">
+        <el-avatar  :size="50" shape="square" v-if="allSongInfo[musicIdIndex]" :src="allSongInfo[musicIdIndex].al.picUrl"></el-avatar>
       </div>
       <div class="info" v-if="allSongInfo[musicIdIndex]">
         <span class="songName">{{allSongInfo[musicIdIndex].name}}</span>
@@ -23,7 +23,7 @@
           <i class="el-icon-video-play inHover" @click="changeState(isPause)" v-if="isPause"></i>
           <i class="el-icon-video-pause inHover" @click="changeState(isPause)" v-else></i>
           <i class="el-icon-caret-right inHover" @click="nextSong"></i>
-          <i class="inHover">词</i>
+          <i class="inHover" @click="showLyric = !showLyric">词</i>
         </div>
         <div class="process">
           <span class="time">{{filterCurrentTime}}</span>
@@ -60,13 +60,22 @@
         </div>
       </div>
     </div>
+     <transition name="el-zoom-in-bottom">
+    <div class="lyric" v-show="showLyric">
+      <Lyric :isPause="isPause" :id = "musicIdArr[musicIdIndex]" :currentTime="this.process.currentTime" :info="allSongInfo[musicIdIndex]"></Lyric>
+    </div>
+     </transition>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import { eventBus } from '@/eventBus/eventBus.js'
+import Lyric from '@/components/MyComponents/Lyric.vue'
 export default {
+  components: {
+    Lyric
+  },
   data () {
     return {
       musicUrl: '', // 播放当前音乐的url
@@ -83,7 +92,8 @@ export default {
       // ['squence', true], ['circle', false], ['random', false]
       playType: [true, false, false],
       TypeIndex: 0, // 播放类型的索引
-      isOpenCurrentList: true
+      isOpenCurrentList: true,
+      showLyric: false
     }
   },
   created () {
@@ -267,6 +277,26 @@ export default {
     align-items: center;
     .img {
       margin-right: 5px;
+      cursor: pointer;
+      position: relative;
+      &::before {
+        content: ">";
+        background-color: rgba(0,0,0,.3);
+        display: none;
+        position: absolute;
+        transform: rotate(-90deg);
+        text-align: center;
+        line-height: 50px;
+        color: #fff;
+        font-size: 25px;
+        left:0;
+        top: 0;
+        width: 50px;
+        height: 50px;
+      }
+      &:hover::before {
+        display: block;
+      }
     }
     .info {
       display: flex;
@@ -345,6 +375,7 @@ export default {
       }
       .speaker {
         position: absolute;
+        z-index: 1001;
         left: 50%;
         transform: translate(-50%, -150%);
         transform-origin: bottom;
@@ -353,6 +384,7 @@ export default {
         ::v-deep .el-slider {
           .el-slider__bar {
             background-color: #ff4e4e;
+
           }
           .el-slider__button {
             border: 0;
@@ -370,10 +402,21 @@ export default {
         right: 0px;
         bottom: 70px;
         overflow-y: auto;
-        z-index: 999;
+        z-index: 1000;
         display: none;
       }
     }
+  }
+  .lyric {
+    position: fixed;
+    top: 70px;
+    bottom: 70px;
+    left: 0;
+    right: 0;
+    // background: #f5f4f7;
+      background-image: linear-gradient(to bottom , #d6e4f1, #fff);
+    z-index: 999;
+    overflow-y: auto;
   }
 }
 </style>
