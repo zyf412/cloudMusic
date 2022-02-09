@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import { eventBus } from '@/eventBus/eventBus.js'
 import Lyric from '@/components/MyComponents/Lyric.vue'
 export default {
@@ -105,8 +105,13 @@ export default {
       }
     })
   },
+  // mounted () {
+  //   if (this.audioState) {
+  //     this.changeState(!this.audioState)
+  //   }
+  // },
   computed: {
-    ...mapState(['musicIdArr', 'newMusicIdIndex', 'allSongInfo']),
+    ...mapState(['musicIdArr', 'newMusicIdIndex', 'allSongInfo', 'audioState']),
     filterCurrentTime () {
       return this.flterTime(this.process.currentTime)
     },
@@ -138,9 +143,15 @@ export default {
         this.$refs.audio.play()
       }
     }
+    // isPause: {
+    //   handler (newVal) {
+    //     this.setAudioState(newVal)
+    //   }
+    // }
   },
   methods: {
     // 得到音乐url
+    ...mapMutations(['setAudioState']),
     async getMusicUrl (id) {
       // console.log(data)
       // if (!check.success) return this.$message.error(check.message)

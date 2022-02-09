@@ -1,10 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VuexPersistence from 'vuex-persist'
 
+const vuexLocal = new VuexPersistence({
+  storage: window.sessionStorage
+})
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    historyTags: ['致你'],
+    audioState: false,
     musicIdArr: [],
     newMusicIdIndex: 0,
     allSongInfo: [],
@@ -20,6 +26,7 @@ export default new Vuex.Store({
     ifLogin: false, // 是否登录
     videoCate: '全部视频',
     uid: null // 用户ID
+
   },
   mutations: {
     // 获得播放列表
@@ -117,10 +124,29 @@ export default new Vuex.Store({
     // ifSubVideoActived 歌手分类关闭
     closeSubVideo (state) {
       state.ifSubVideoActived = true
+    },
+    setAudioState (state, newState) {
+      state.audioState = newState
+    },
+    // 移除记录
+    removeHistoryTags (state, name) {
+      const index = state.historyTags.findIndex(item => item === name)
+      state.historyTags.splice(index, 1)
+    },
+    // 添加记录
+    addHistoryTags (state, name) {
+      if (state.historyTags.includes(name)) {
+        const index = state.historyTags.findIndex(item => item === name)
+        state.historyTags.splice(index, 1)
+        state.historyTags.unshift(name)
+      } else {
+        state.historyTags.unshift(name)
+      }
     }
   },
   actions: {
   },
   modules: {
-  }
+  },
+  plugins: [vuexLocal.plugin]
 })

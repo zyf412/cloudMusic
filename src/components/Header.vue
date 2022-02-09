@@ -25,7 +25,14 @@
     <!-- 搜索盒子 -->
     <div class="searchBox" ref="hotListRef">
       <div class="hot">
-        <div class="history">搜索历史</div>
+        <div class="history">
+          <h4 style="margin-bottom:5px">搜索历史</h4>
+              <div>
+                <el-tag style="margin-left:5px;margin-bottom:5px;cursor:pointer" @click="gotoSearch(tag)" @close="removeHistoryTags(tag)" v-for="tag in historyTags" size="mini" :key="tag" closable>
+                  {{tag}}
+                </el-tag>
+              </div>
+        </div>
         <div class="hotList">
           <h4>热搜榜</h4>
           <el-table :show-header="false" :data="hotList" highlight-current-row style="width: 100%" @row-click="hotClick">
@@ -72,13 +79,13 @@
     <!-- 登录盒子 -->
 
     <el-dialog title="登录账号" :visible.sync="showLogin">
-    <Login @getUserInfo="getUserInfo"></Login>
+      <Login @getUserInfo="getUserInfo"></Login>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import Login from '@/components/MyComponents/Login.vue'
 export default {
   inject: ['reload'],
@@ -110,15 +117,27 @@ export default {
             this.getSearchSuggest()
           }, 600)
         } else {
+          // 为空
+          // 清除掉setTimeout
           clearTimeout(this.timer)
+          // 隐藏热搜列表
           this.$refs.hotListRef.style.display = 'block'
+          // 将值为空
           this.showKeyword = ''
         }
       }
     }
   },
+  computed: {
+    ...mapState(['historyTags'])
+  },
   methods: {
-    ...mapMutations(['setLogin', 'setLogout']),
+    ...mapMutations([
+      'setLogin',
+      'setLogout',
+      'removeHistoryTags',
+      'addHistoryTags'
+    ]),
     back () {
       this.$router.back()
     },
@@ -130,6 +149,7 @@ export default {
       clearTimeout(this.timer)
       this.getSearchSuggest()
       this.$router.push(`/search/${this.keyword}`)
+      this.addHistoryTags(this.keyword)
       this.showKeyword = '' // 我们没有等到setTimeout就快速按下了enter，将这个设置为空，保证不会显示出建议列表
       this.$refs.inputRef.blur() // 需要做失去焦点
     },
@@ -183,19 +203,26 @@ export default {
           this.$nextTick(() => {
             this.search()
           })
+          // this.addHistoryTags(this.keyword)
           break
         }
         case 'artists': {
-          console.log('artists')
+          this.keyword = item.name
+          this.$router.push(`/artistDetail/${item.id}`)
+          this.addHistoryTags(this.keyword)
           break
         }
         case 'albums': {
-          console.log('albums')
+          this.keyword = item.name
+          this.$router.push(`/albumDetail/${item.id}`)
+          this.addHistoryTags(this.keyword)
           break
         }
         case 'playlists': {
-          console.log(item)
+          // console.log(item)
+          this.keyword = item.name
           this.$router.push(`/playList/${item.id}`)
+          this.addHistoryTags(this.keyword)
           break
         }
         default:
@@ -248,6 +275,15 @@ export default {
         this.showLogin = !this.showLogin
         this.setLogin(profile.userId)
       }
+    },
+    // 点击历史标签去搜索
+    gotoSearch (tag) {
+      this.keyword = tag
+      // 当keword改变之后，触发监听事件，事件是setTimeout，需要先执行，
+      // 不然如果search先执行的话，showKeyword没有设置为空，搜索建议的盒子会显示出来，所以需要下一轮才执行search
+      this.$nextTick(() => {
+        this.search()
+      })
     }
   }
 }
@@ -264,9 +300,9 @@ export default {
   .headerLeft {
     width: 160px;
     height: 100%;
-    // background-image: url("../assets/topbar.png");
+    background-image: url("../assets/topbar.png");
     background-repeat: no-repeat;
-    background-color: #ff4e4e;
+    // background-color: #ff4e4e;
   }
   .headerCenter {
     display: flex;
@@ -298,14 +334,13 @@ export default {
       margin-left: 5px;
       font-size: 20px;
       color: #fff;
-
     }
     .loginBtn,
     .logoutBtn {
-        cursor: pointer;
-        font-size: 12px;
-        margin-left: 20px;
-        color:#ff4e4e;
+      cursor: pointer;
+      font-size: 12px;
+      margin-left: 20px;
+      color: #ff4e4e;
     }
   }
 }
@@ -351,6 +386,7 @@ export default {
   box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.3);
   // display: none;
   padding: 20px;
+  border-radius: 10px;
   .searchTitle {
     font-size: 14px;
     color: #666666;

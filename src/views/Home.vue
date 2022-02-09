@@ -163,6 +163,7 @@ export default {
       if (this.$refs.main) this.$refs.main.$el.scrollTop = this.artistDetailScrollTop
     })
     // this.getUserPlaylist(this.uid)
+    if (this.uid) this.getUserPlaylist(this.uid)
   },
   watch: {
     uid (newName, oldName) {
