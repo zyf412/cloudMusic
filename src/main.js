@@ -5,6 +5,7 @@ import store from './store'
 import ElementUI from 'element-ui'
 import axios from 'axios'
 import '@/assets/css/global.css'
+import '@/assets/icon/iconfont.css'
 import 'element-ui/lib/theme-chalk/index.css'
 axios.defaults.baseURL = 'http://127.0.0.1:3000'
 // axios拦截器

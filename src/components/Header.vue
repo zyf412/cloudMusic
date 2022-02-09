@@ -136,7 +136,8 @@ export default {
       'setLogin',
       'setLogout',
       'removeHistoryTags',
-      'addHistoryTags'
+      'addHistoryTags',
+      'getLikeList'
     ]),
     back () {
       this.$router.back()
@@ -256,6 +257,16 @@ export default {
           // })
         })
     },
+    // 得到喜欢的歌曲ID列表
+    async likeList (uid) {
+      const { data: res } = await this.$http.get('/likelist', {
+        params: {
+          uid
+        }
+      })
+      if (res.code !== 200) return this.$message.error('获取喜欢列表失败')
+      this.getLikeList(res.ids)
+    },
     // 登录状态
     async status () {
       const { data: res } = await this.$http.get('/login/status', {
@@ -266,7 +277,10 @@ export default {
       })
       if (res.data.code !== 200) return this.$message.error('获取状态失败')
       this.profile = res.data.profile
-      if (res.data.profile) this.setLogin(res.data.profile.userId)
+      if (res.data.profile) {
+        this.setLogin(res.data.profile.userId)
+        this.likeList(res.data.profile.userId)
+      }
     },
     // 登录后子组件传入用户信息
     getUserInfo (profile) {

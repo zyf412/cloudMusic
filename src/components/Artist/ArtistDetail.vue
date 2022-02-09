@@ -22,6 +22,12 @@
             <el-table :data="hotSongs" style="width: 100%"  @row-dblclick="rowDbClick">
              <el-table-column type="index">
             </el-table-column>
+                         <el-table-column label="操作" width="60">
+              <template slot-scope="scope">
+                   <i class="iconfont icon-xihuan2" @click="like(false,scope.row.id)" v-if="likelist.includes(scope.row.id)"></i>
+                   <i class="iconfont icon-xihuan" @click="like(true,scope.row.id)" v-else></i>
+              </template>
+            </el-table-column>
             <el-table-column prop="name" label="音乐标题" width="250">
             </el-table-column>
             <el-table-column prop="al.name" label="专辑">
@@ -49,7 +55,7 @@
 
 <script>
 import { eventBus } from '@/eventBus/eventBus.js'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import { mixin } from '@/mixin/mixin.js'
 import AlbumBox from '@/components/Artist/AlbumBox.vue'
 export default {
@@ -82,6 +88,7 @@ export default {
     this.getAlbumIds()
   },
   computed: {
+    ...mapState(['likelist']),
     disabled () {
       return this.isActived || (this.loading || !this.isMore)
     }
@@ -103,7 +110,7 @@ export default {
     next()
   },
   methods: {
-    ...mapMutations(['getMusicIdList', 'clearCatch']),
+    ...mapMutations(['getMusicIdList', 'clearCatch', 'addLikeList', 'disLike']),
     // 得到歌手信息
     async getArtistInfo () {
       const { data: res } = await this.$http.get('/artists', {
@@ -162,6 +169,24 @@ export default {
         this.getAlbumIds()
         this.loading = false
       }, 2000)
+    },
+    // 喜欢
+    async like (like, id) {
+      const { data: res } = await this.$http.get('/like', {
+        params: {
+          like,
+          id
+        }
+      })
+      if (res.code !== 200) return this.$message.error('获取信息失败')
+      if (like) {
+        this.addLikeList(id)
+        return this.$message.success('已添加到喜欢列表')
+      } else {
+        this.disLike(id)
+        return this.$message.success('取消喜欢成功')
+      }
+      // console.log(this.songlist)
     }
   }
 }

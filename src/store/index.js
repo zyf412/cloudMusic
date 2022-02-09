@@ -25,8 +25,8 @@ export default new Vuex.Store({
     ifSubVideoActived: false, // 视频收藏是否显示
     ifLogin: false, // 是否登录
     videoCate: '全部视频',
-    uid: null // 用户ID
-
+    uid: null, // 用户ID
+    likelist: [] // 喜欢的音乐的id列表
   },
   mutations: {
     // 获得播放列表
@@ -142,6 +142,19 @@ export default new Vuex.Store({
       } else {
         state.historyTags.unshift(name)
       }
+    },
+    // 获得喜欢列表
+    getLikeList (state, list) {
+      state.likelist = list
+    },
+    // 添加喜欢
+    addLikeList (state, id) {
+      state.likelist.push(id)
+    },
+    // 不喜欢
+    disLike (state, id) {
+      const index = state.likelist.findIndex(item => item === id)
+      state.likelist.splice(index, 1)
     }
   },
   actions: {

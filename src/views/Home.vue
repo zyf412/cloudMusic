@@ -69,7 +69,7 @@
 
             <el-submenu index="12">
               <template slot="title">
-                <i class="el-icon-location"></i>
+                <i class="el-icon-collection-tag"></i>
                 <span>创建的歌单</span>
               </template>
 
@@ -80,7 +80,7 @@
 
             <el-submenu index="13">
               <template slot="title">
-                <i class="el-icon-star-on"></i>
+                <i class="iconfont icon-xihuan"></i>
                 <span>收藏的歌单</span>
               </template>
 
