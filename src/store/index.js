@@ -108,6 +108,7 @@ export default new Vuex.Store({
     setLogout (state) {
       state.ifLogin = false
       state.uid = null
+      state.likelist = []
     },
     // ifArtistActived 歌手分类显示
     showVideo (state) {

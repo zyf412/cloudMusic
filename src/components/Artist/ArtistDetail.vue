@@ -88,7 +88,7 @@ export default {
     this.getAlbumIds()
   },
   computed: {
-    ...mapState(['likelist']),
+    ...mapState(['likelist', 'uid']),
     disabled () {
       return this.isActived || (this.loading || !this.isMore)
     }
@@ -172,6 +172,7 @@ export default {
     },
     // 喜欢
     async like (like, id) {
+      if (!this.uid) return this.$message.error('请先登录账号欧')
       const { data: res } = await this.$http.get('/like', {
         params: {
           like,

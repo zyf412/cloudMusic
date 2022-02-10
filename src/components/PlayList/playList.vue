@@ -91,7 +91,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['likelist'])
+    ...mapState(['likelist', 'uid'])
   },
   created () {
     this.getListDetail(this.id)
@@ -146,6 +146,7 @@ export default {
     },
     // 喜欢
     async like (like, id) {
+      if (!this.uid) return this.$message.error('请先登录账号欧')
       const { data: res } = await this.$http.get('/like', {
         params: {
           like,

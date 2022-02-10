@@ -15,51 +15,14 @@
                 <span>发现音乐</span>
               </template>
             </el-menu-item>
-<!--
-            <el-menu-item index="2">
-              <span slot="title">播客</span>
-            </el-menu-item> -->
 
             <el-menu-item index="/AllVideo">
-             <i class="el-icon-video-camera-solid"></i>
+              <i class="el-icon-video-camera-solid"></i>
               <span slot="title">视频</span>
             </el-menu-item>
 
-            <!-- <el-menu-item index="4">
-              <span slot="title">朋友</span>
-            </el-menu-item> -->
-
-            <!-- <el-menu-item index="5">
-              <span slot="title">直播</span>
-            </el-menu-item> -->
-
-            <!-- <el-menu-item index="6">
-              <span slot="title">私人FM</span>
-            </el-menu-item> -->
-
             <el-menu-item-group>
               <template slot="title">我的音乐</template>
-
-              <!-- <el-menu-item index="7">
-                <i class="el-icon-location"></i>
-                <span slot="title">本地与下载</span>
-              </el-menu-item> -->
-
-              <!-- <el-menu-item index="8">
-                <i class="el-icon-location"></i>
-                <span slot="title">最近播放</span>
-              </el-menu-item> -->
-
-              <!-- <el-menu-item index="9">
-                <i class="el-icon-location"></i>
-                <span slot="title">我的音乐云盘</span>
-              </el-menu-item> -->
-
-              <!-- <el-menu-item index="10">
-                <i class="el-icon-location"></i>
-                <span slot="title">我的播客</span>
-              </el-menu-item> -->
-
               <el-menu-item index="/Collection">
                 <i class="el-icon-collection"></i>
                 <span slot="title">我的收藏</span>
@@ -74,7 +37,7 @@
               </template>
 
               <el-menu-item-group>
-                <el-menu-item :title="item.name" v-for="item in userPlaylist" :key="item.id" @click="gotoPlaylist(item.id)" >{{item.name}}</el-menu-item>
+                <el-menu-item :title="item.name" v-for="item in userPlaylist" :key="item.id" @click="gotoPlaylist(item.id)">{{item.name}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
@@ -85,7 +48,7 @@
               </template>
 
               <el-menu-item-group>
-                <el-menu-item :title="item.name" v-for="item in subscribedPlaylist" :key="item.id" @click="gotoPlaylist(item.id)" >{{item.name}}</el-menu-item>
+                <el-menu-item :title="item.name" v-for="item in subscribedPlaylist" :key="item.id" @click="gotoPlaylist(item.id)">{{item.name}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>
@@ -100,7 +63,7 @@
         </el-container>
         <!-- 底部播放器 -->
       </el-container>
-       <el-footer>
+      <el-footer>
         <Footer></Footer>
       </el-footer>
 
@@ -152,15 +115,15 @@ export default {
     })
     // 当返回之前的页面，还原之前滚动条的位置
     eventBus.$on('backTo', () => {
-      if (this.$refs.main) this.$refs.main.$el.scrollTop = this.playListCateScrollTop
+      if (this.$refs.main) { this.$refs.main.$el.scrollTop = this.playListCateScrollTop }
     })
     // 得到之前滚动条的位置，添加到vuex中去
     eventBus.$on('backArtistDetail', () => {
-      if (this.$refs.main) this.getArtistDetailScrollTop(this.$refs.main.$el.scrollTop)
+      if (this.$refs.main) { this.getArtistDetailScrollTop(this.$refs.main.$el.scrollTop) }
     })
     // 当返回之前的页面，还原之前滚动条的位置
     eventBus.$on('backToArtistDetail', () => {
-      if (this.$refs.main) this.$refs.main.$el.scrollTop = this.artistDetailScrollTop
+      if (this.$refs.main) { this.$refs.main.$el.scrollTop = this.artistDetailScrollTop }
     })
     // this.getUserPlaylist(this.uid)
     if (this.uid) this.getUserPlaylist(this.uid)
@@ -179,7 +142,9 @@ export default {
       })
       if (res.code !== 200) return this.$message.error('获取用户歌单失败')
       this.userPlaylist = res.playlist.filter(item => item.subscribed === false)
-      this.subscribedPlaylist = res.playlist.filter(item => item.subscribed === true)
+      this.subscribedPlaylist = res.playlist.filter(
+        item => item.subscribed === true
+      )
     },
     gotoPlaylist (id) {
       this.$router.push(`/playList/${id}`)
@@ -221,10 +186,10 @@ export default {
     .el-menu-item {
       height: 40px;
       line-height: 40px;
-       overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    color: #fff !important;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #fff !important;
     }
   }
   .el-footer {

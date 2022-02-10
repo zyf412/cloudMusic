@@ -6,6 +6,12 @@
     </div>
     <el-table :data="songs" style="width: 100%" @row-dblclick="rowDbClick">
       <el-table-column type="index"> </el-table-column>
+      <el-table-column label="操作" width="60">
+        <template slot-scope="scope">
+          <i class="iconfont icon-xihuan2" @click="like(false,scope.row.id)" v-if="likelist.includes(scope.row.id)"></i>
+          <i class="iconfont icon-xihuan" @click="like(true,scope.row.id)" v-else></i>
+        </template>
+      </el-table-column>
       <el-table-column prop="name" label="音乐标题" width="250">
       </el-table-column>
       <el-table-column label="歌手" width="250">
@@ -29,7 +35,7 @@
 
 <script>
 import { eventBus } from '@/eventBus/eventBus.js'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
   props: ['keyword'],
   data () {
@@ -50,8 +56,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState(['likelist', 'uid'])
+  },
   methods: {
-    ...mapMutations(['addMusic']),
+    ...mapMutations(['addMusic', 'getMusicIdList', 'addLikeList', 'disLike']),
     // 得到搜索到的歌曲列表
     async getSongs () {
       const { data: res } = await this.$http.get('/search', {
@@ -90,6 +99,25 @@ export default {
       this.offset = (page - 1) * this.limit
       this.getSongs()
       eventBus.$emit('changeSearchPage')
+    },
+    // 喜欢
+    async like (like, id) {
+      if (!this.uid) return this.$message.error('请先登录账号欧')
+      const { data: res } = await this.$http.get('/like', {
+        params: {
+          like,
+          id
+        }
+      })
+      if (res.code !== 200) return this.$message.error('获取信息失败')
+      if (like) {
+        this.addLikeList(id)
+        return this.$message.success('已添加到喜欢列表')
+      } else {
+        this.disLike(id)
+        return this.$message.success('取消喜欢成功')
+      }
+      // console.log(this.songlist)
     }
   }
 }
