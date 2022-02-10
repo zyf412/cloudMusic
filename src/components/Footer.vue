@@ -100,6 +100,7 @@ export default {
     this.musicIdIndex = this.newMusicIdIndex
     this.getMusicUrl(this.musicIdArr[this.musicIdIndex])
     eventBus.$on('gotoVideo', () => {
+      console.log('去了视频页面')
       if (!this.isPause) {
         this.changeState(this.isPause)
       }

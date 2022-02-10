@@ -11,7 +11,8 @@
         </div>
         <div class="btns">
           <el-button icon="el-icon-caret-right" class="bgcolor" size="mini" round>播放全部 <i class="el-icon-plus"></i></el-button>
-          <el-button icon="el-icon-folder-checked" size="mini" round>已收藏({{ playlist.subscribedCount }})</el-button>
+          <el-button icon="el-icon-folder-checked" size="mini" round v-if="!playlist.subscribed" @click="subscribe(1,playlist.id)">收藏({{ playlist.subscribedCount }})</el-button>
+          <el-button icon="el-icon-folder-checked" size="mini" style="color:#ec4141;" round v-else @click="subscribe(2,playlist.id)" >已收藏({{ playlist.subscribedCount }})</el-button>
           <el-button icon="el-icon-bottom" size="mini" round>下载全部</el-button>
           <el-button icon="el-icon-top-right" size="mini" round>转发{{ playlist.shareCount }}</el-button>
         </div>
@@ -71,6 +72,7 @@
 
 <script>
 import PlaylistComment from '@/components/Comment/PlayListComment.vue'
+import { eventBus } from '@/eventBus/eventBus.js'
 import { mixin } from '@/mixin/mixin.js'
 import { mapMutations, mapState } from 'vuex'
 export default {
@@ -160,6 +162,28 @@ export default {
       } else {
         this.disLike(id)
         return this.$message.success('取消喜欢成功')
+      }
+      // console.log(this.songlist)
+    },
+    // 收藏歌单
+    async subscribe (t, id) {
+      if (!this.uid) return this.$message.error('请先登录账号欧')
+      const { data: res } = await this.$http.get('/playlist/subscribe', {
+        params: {
+          t,
+          id
+        }
+      })
+      if (res.code !== 200) return this.$message.error('获取信息失败')
+      this.playlist.subscribed = !this.playlist.subscribed
+      if (t === 1) {
+        this.playlist.subscribedCount++
+        eventBus.$emit('updateUserPlaylist')
+        return this.$message.success('已添加到收藏列表')
+      } else {
+        this.playlist.subscribedCount--
+        eventBus.$emit('updateUserPlaylist')
+        return this.$message.success('取消收藏成功')
       }
       // console.log(this.songlist)
     }

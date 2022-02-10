@@ -74,8 +74,8 @@ const routes = [
         beforeEnter: (to, from, next) => {
           if (from.path === '/AllVideo' || from.path === '/FindMusic') {
             eventBus.$emit('backAllPlayList')
-            eventBus.$emit('gotoVideo')
           }
+          eventBus.$emit('gotoVideo')
           next()
         }
       },

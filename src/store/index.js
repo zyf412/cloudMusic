@@ -9,7 +9,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    historyTags: ['致你'],
+    historyTags: [],
     audioState: false,
     musicIdArr: [],
     newMusicIdIndex: 0,

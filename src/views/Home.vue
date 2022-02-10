@@ -127,6 +127,11 @@ export default {
     })
     // this.getUserPlaylist(this.uid)
     if (this.uid) this.getUserPlaylist(this.uid)
+
+    // 用户收藏或取消收藏歌单,更新用户的歌单
+    eventBus.$on('updateUserPlaylist', () => {
+      this.getUserPlaylist(this.uid)
+    })
   },
   watch: {
     uid (newName, oldName) {

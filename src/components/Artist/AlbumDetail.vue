@@ -11,8 +11,8 @@
         </div> -->
         <div class="btns">
           <el-button icon="el-icon-caret-right" class="bgcolor" size="mini" round>播放全部 <i class="el-icon-plus"></i></el-button>
-          <el-button icon="el-icon-folder-checked" size="mini" round>已收藏({{ subCount }})</el-button>
-          <el-button icon="el-icon-bottom" size="mini" round>下载全部</el-button>
+          <el-button icon="el-icon-folder-checked" size="mini" round v-if="!subscribed" @click="subscribe(1,id)">收藏({{ subCount }})</el-button>
+          <el-button icon="el-icon-folder-checked" size="mini" style="color:#ec4141;" @click="subscribe(2,id)" round v-else>已收藏({{ subCount }})</el-button>
           <el-button icon="el-icon-top-right" size="mini" round>转发{{ shareCount }}</el-button>
         </div>
         <div class="textBox">
@@ -87,7 +87,8 @@ export default {
       activeName: 'first',
       shareCount: 0,
       subCount: 0,
-      commentCount: 0
+      commentCount: 0,
+      subscribed: false
     }
   },
   created () {
@@ -116,6 +117,7 @@ export default {
       this.shareCount = res.shareCount
       this.subCount = res.subCount
       this.commentCount = res.commentCount
+      this.subscribed = res.isSub
     },
     // 得到音乐信息
     async getMusicListDetail (ids) {
@@ -161,6 +163,27 @@ export default {
         return this.$message.success('取消喜欢成功')
       }
       // console.log(this.songlist)
+    },
+    // 收藏歌单
+    async subscribe (t, id) {
+      if (!this.uid) return this.$message.error('请先登录账号欧')
+      const { data: res } = await this.$http.get('/album/sub', {
+        params: {
+          t,
+          id
+        }
+      })
+      if (res.code !== 200) return this.$message.error('获取信息失败')
+      this.subscribed = !this.subscribed
+      if (t === 1) {
+        this.subCount++
+        // eventBus.$emit('updateUserPlaylist')
+        return this.$message.success('已添加到收藏列表')
+      } else {
+        this.subCount--
+        // eventBus.$emit('updateUserPlaylist')
+        return this.$message.success('取消收藏成功')
+      }
     }
   }
 }
