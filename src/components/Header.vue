@@ -314,9 +314,9 @@ export default {
   .headerLeft {
     width: 160px;
     height: 100%;
-    background-image: url("../assets/topbar.png");
+    // background-image: url("../assets/topbar.png");
     background-repeat: no-repeat;
-    // background-color: #ff4e4e;
+    background-color: #ff4e4e;
   }
   .headerCenter {
     display: flex;

@@ -421,12 +421,12 @@ export default {
   }
   .lyric {
     position: fixed;
-    top: 70px;
+    top: 0;
     bottom: 70px;
     left: 0;
     right: 0;
     // background: #f5f4f7;
-      background-image: linear-gradient(to bottom , #d6e4f1, #fff);
+    background-image: linear-gradient(to bottom , #d6e4f1, #fff);
     z-index: 999;
     overflow-y: auto;
   }

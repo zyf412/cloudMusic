@@ -113,7 +113,7 @@ export default {
     box-sizing: border-box;
     height: 100%;
     // background-color: #f5f4f7;
-    background-image: linear-gradient(to bottom, #d6e4f1, #fff);
+    // background-image: linear-gradient(to bottom, #d6e4f1, #fff);
     margin: 0 auto;
     text-align: center;
     overflow-y: auto;

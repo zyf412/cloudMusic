@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     async getBanners () {
-      const { data: res } = await this.$http.get('/banner', { type: 0 })
+      const { data: res } = await this.$http.get('/banner', { params: { type: 0 } })
       // console.log(res)
       if (res.code !== 200) return this.$message.error('获取信息失败')
       this.banners = res.banners

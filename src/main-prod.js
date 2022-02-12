@@ -7,7 +7,8 @@ import axios from 'axios'
 import '@/assets/css/global.css'
 import '@/assets/icon/iconfont.css'
 import 'element-ui/lib/theme-chalk/index.css'
-axios.defaults.baseURL = 'http://127.0.0.1:3000'
+axios.defaults.baseURL = 'http://106.55.183.116:3333'
+// axios.defaults.baseURL = '/api' //打包后前端代理失效 直接用
 // axios拦截器
 axios.interceptors.request.use(function (config) {
   // 添加一个时间戳 防止缓存
