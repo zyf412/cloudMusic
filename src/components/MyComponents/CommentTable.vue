@@ -1,6 +1,6 @@
 <template>
   <div>
-      <el-table :data="comments" style="width: 100%" :show-header="false">
+      <el-table :data="comments"   :row-key="(row)=>row.commentId" style="width: 100%" :show-header="false">
           <el-table-column  width="80">
               <template slot-scope="scope">
                   <div>

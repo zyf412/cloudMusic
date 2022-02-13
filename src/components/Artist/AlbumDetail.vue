@@ -10,10 +10,10 @@
             {{ ablum.creator.nickname }}</span>
         </div> -->
         <div class="btns">
-          <el-button icon="el-icon-caret-right" class="bgcolor" size="mini" round>播放全部 <i class="el-icon-plus"></i></el-button>
+          <el-button icon="el-icon-caret-right" class="bgcolor" size="mini" round @click="playAll">播放全部 <i class="el-icon-plus"></i></el-button>
           <el-button icon="el-icon-folder-checked" size="mini" round v-if="!subscribed" @click="subscribe(1,id)">收藏({{ subCount }})</el-button>
           <el-button icon="el-icon-folder-checked" size="mini" style="color:#ec4141;" @click="subscribe(2,id)" round v-else>已收藏({{ subCount }})</el-button>
-          <el-button icon="el-icon-top-right" size="mini" round>转发{{ shareCount }}</el-button>
+          <el-button icon="el-icon-top-right" size="mini" round>转发数:{{ shareCount }}</el-button>
         </div>
         <div class="textBox">
           <div class="tag">
@@ -141,6 +141,15 @@ export default {
       this.musicIdIndex = this.musicIdList.indexOf(row.id)
       this.getMusicIdList({
         musicIdlist: this.musicIdList,
+        musicIdIndex: this.musicIdIndex,
+        songlist: this.songlist
+      })
+    },
+    // 播放全部
+    playAll () {
+      this.musicIdIndex = 0
+      this.getMusicIdList({
+        musicIdlist: this.musicIdlist,
         musicIdIndex: this.musicIdIndex,
         songlist: this.songlist
       })

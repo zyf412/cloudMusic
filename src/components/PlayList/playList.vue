@@ -10,11 +10,11 @@
             {{ playlist.creator.nickname }}</span>
         </div>
         <div class="btns">
-          <el-button icon="el-icon-caret-right" class="bgcolor" size="mini" round>播放全部 <i class="el-icon-plus"></i></el-button>
+          <el-button icon="el-icon-caret-right" class="bgcolor" size="mini" round @click="playAll">播放全部 <i class="el-icon-plus"></i></el-button>
           <el-button icon="el-icon-folder-checked" size="mini" round v-if="!playlist.subscribed" @click="subscribe(1,playlist.id)">收藏({{ playlist.subscribedCount }})</el-button>
           <el-button icon="el-icon-folder-checked" size="mini" style="color:#ec4141;" round v-else @click="subscribe(2,playlist.id)" >已收藏({{ playlist.subscribedCount }})</el-button>
-          <el-button icon="el-icon-bottom" size="mini" round>下载全部</el-button>
-          <el-button icon="el-icon-top-right" size="mini" round>转发{{ playlist.shareCount }}</el-button>
+          <!--  <el-button icon="el-icon-bottom" size="mini" round>下载全部</el-button> -->
+          <el-button icon="el-icon-top-right" size="mini" round>转发数:{{ playlist.shareCount }}</el-button>
         </div>
         <div class="textBox">
           <div class="tag">
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import PlaylistComment from '@/components/Comment/PlayListComment.vue'
+// import PlaylistComment from '@/components/Comment/PlayListComment.vue'
 import { eventBus } from '@/eventBus/eventBus.js'
 import { mixin } from '@/mixin/mixin.js'
 import { mapMutations, mapState } from 'vuex'
@@ -80,7 +80,7 @@ export default {
   props: ['id'],
   mixins: [mixin],
   components: {
-    PlaylistComment,
+    PlaylistComment: () => import('@/components/Comment/PlayListComment.vue'),
     Subscribe: () => import('@/components/PlayList/subscribe.vue')
   },
   data () {
@@ -140,6 +140,15 @@ export default {
     async rowDbClick (row) {
       if (!await this.checkMusic(row.id)) return
       this.musicIdIndex = this.musicIdlist.indexOf(row.id)
+      this.getMusicIdList({
+        musicIdlist: this.musicIdlist,
+        musicIdIndex: this.musicIdIndex,
+        songlist: this.songlist
+      })
+    },
+    // 播放全部
+    playAll () {
+      this.musicIdIndex = 0
       this.getMusicIdList({
         musicIdlist: this.musicIdlist,
         musicIdIndex: this.musicIdIndex,

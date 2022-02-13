@@ -3,7 +3,7 @@
     <el-input type="textarea" resize="none" placeholder="请输入内容" v-model="commentText" maxlength="140" show-word-limit>
     </el-input>
     <div class="commit">
-        <el-button>提交</el-button>
+        <el-button @click="commit">提交</el-button>
     </div>
     <div class="comment">
       <div class="hotComment">
@@ -24,7 +24,9 @@
 
 <script>
 import CommentTable from '@/components/MyComponents/CommentTable.vue'
+import { mixin } from '@/mixin/commentMixin.js'
 export default {
+  mixins: [mixin],
   props: ['id'],
   data () {
     return {
@@ -64,6 +66,15 @@ export default {
       this.offset = (page - 1) * this.limit
       this.getCommentVideo()
       //   this.$refs.scrollTo(top)
+    },
+    // 发表评论
+    async commit () {
+      if (this.commentText.trim() === '') return this.$message.error('评论不能为空')
+      // 评论函数 在混入中
+      if (await this.comment(1, this.id, 5, this.commentText)) {
+        this.getCommentVideo()
+        this.commentText = ''
+      }
     }
   }
 }
