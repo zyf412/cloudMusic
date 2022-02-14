@@ -79,7 +79,9 @@ export default {
     async commit () {
       if (this.commentText.trim() === '') return this.$message.error('评论不能为空')
       // 评论函数 在混入中
-      if (await this.comment(1, this.id, 0, this.commentText)) {
+      const ifComment = await this.comment(1, this.id, 0, this.commentText)
+      console.log(ifComment)
+      if (ifComment) {
         this.getSongComment()
         this.commentText = ''
       }
