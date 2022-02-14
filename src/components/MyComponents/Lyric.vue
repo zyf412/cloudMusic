@@ -21,11 +21,11 @@
 </template>
 
 <script>
-import SongComment from '@/components/Comment/SongComment.vue'
+// import SongComment from '@/components/Comment/SongComment.vue'
 export default {
   props: ['id', 'currentTime', 'info', 'isPause'],
   components: {
-    SongComment
+    SongComment: () => import('@/components/Comment/SongComment.vue')
   },
   data () {
     return {
